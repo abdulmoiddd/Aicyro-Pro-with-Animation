@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { jsPDF } from "jspdf";
 import Navbar from "../components/Essential/Navbar";
 import Footer from "../components/Essential/Footer";
+import { ArrowLeft, ArrowRight, Download, Check, Sparkles, ShieldCheck } from "lucide-react";
 
 const TOTAL_STEPS = 16;
 const CALENDLY_URL = "#";
@@ -683,16 +684,17 @@ export default function FreeWebsiteAudit() {
     return (
       <button
         key={value}
+        type="button"
         onClick={() => handleOptClick(stepName, value, label, isMulti, isAuto)}
-        className={`w-full text-left p-4 rounded-xl text-[0.93rem] border transition-[transform,border-color,background-color] duration-150 flex items-center justify-between hover:scale-[1.01] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${
+        className={`w-full text-left p-4 rounded-xl text-sm border transition-colors duration-150 motion-safe:transition-transform motion-safe:hover:-translate-y-0.5 flex items-center justify-between cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] disabled:opacity-50 disabled:pointer-events-none ${
           isSelected
-            ? "bg-[var(--primary)]/15 border-[var(--primary)] text-[var(--foreground)] font-semibold shadow-sm"
+            ? "bg-[var(--primary)]/10 border-[var(--primary)] text-[var(--foreground)] font-semibold shadow-2xs"
             : `bg-[var(--background)] border-[var(--border-color)] text-[var(--foreground)] hover:border-[var(--primary)]/60 hover:bg-[var(--card-bg)] ${errors[stepName] ? "border-[var(--logo-politico-red)]" : ""}`
         }`}
       >
         <span>{label}</span>
         {isSelected && (
-          <span className="text-[var(--primary)] text-sm font-bold">
+          <span className="w-5 h-5 rounded-full bg-[var(--primary)] text-[var(--color-accent-ink)] flex items-center justify-center text-xs font-bold shrink-0">
             ✓
           </span>
         )}
@@ -1317,19 +1319,25 @@ export default function FreeWebsiteAudit() {
               )}
 
               {/* Navigation */}
-              <div className="flex gap-4 mt-8">
+              <div className="flex items-center gap-3 mt-8">
                 <button
+                  type="button"
                   onClick={prevStep}
                   disabled={cur === 1}
-                  className={`flex-none px-6 py-4 font-bold rounded-xl border border-[var(--border-color)] text-[var(--foreground-muted)] transition-[color,border-color] duration-150 ${cur === 1 ? "opacity-0 pointer-events-none" : "hover:text-[var(--foreground)] hover:border-[var(--primary)] cursor-pointer"}`}
+                  className={`inline-flex items-center justify-center p-3.5 rounded-xl border border-[var(--border-color)] text-[var(--foreground)] bg-[var(--background)] hover:border-[var(--primary)] transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] disabled:opacity-0 disabled:pointer-events-none cursor-pointer ${
+                    cur === 1 ? "opacity-0 pointer-events-none" : ""
+                  }`}
+                  aria-label="Previous step"
                 >
-                  ←
+                  <ArrowLeft size={18} aria-hidden="true" />
                 </button>
                 <button
+                  type="button"
                   onClick={() => nextStep()}
-                  className="flex-1 px-6 py-4 font-bold rounded-xl bg-[var(--primary)] hover:bg-[var(--secondary)] text-[var(--color-accent-ink)] shadow-md hover:shadow-lg transition-[transform,background-color] duration-150 cursor-pointer"
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 font-bold rounded-xl bg-[var(--primary)] hover:bg-[var(--secondary)] text-[var(--color-accent-ink)] shadow-xs transition-colors duration-150 motion-safe:transition-transform motion-safe:hover:-translate-y-0.5 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap"
                 >
-                  {cur === TOTAL_STEPS ? "Get My Audit Report →" : "Next →"}
+                  <span>{cur === TOTAL_STEPS ? "Generate Custom Audit Blueprint" : "Next Step"}</span>
+                  <ArrowRight size={17} className="shrink-0" aria-hidden="true" />
                 </button>
               </div>
 
@@ -1401,15 +1409,17 @@ export default function FreeWebsiteAudit() {
 
               <div className="flex flex-col gap-3 mt-8">
                 <button
+                  type="button"
                   onClick={generatePDF}
-                  className="w-full px-6 py-4 font-bold rounded-xl bg-[var(--primary)] hover:bg-[var(--secondary)] text-[var(--color-accent-ink)] shadow-md hover:shadow-lg transition-[transform,background-color] duration-150 cursor-pointer"
+                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 font-bold rounded-xl bg-[var(--primary)] hover:bg-[var(--secondary)] text-[var(--color-accent-ink)] shadow-xs transition-colors duration-150 motion-safe:transition-transform motion-safe:hover:-translate-y-0.5 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap"
                 >
-                  <span className="whitespace-nowrap">Download Visual Blueprint (PDF)</span>
+                  <Download size={18} className="shrink-0" aria-hidden="true" />
+                  <span>Download Visual Blueprint (PDF)</span>
                 </button>
 
                 <a
                   href={SITE_URL}
-                  className="w-full text-center px-6 py-4 font-bold rounded-xl border border-[var(--border-color)] text-[var(--foreground)] hover:border-[var(--primary)] transition-colors duration-150 mt-2"
+                  className="w-full text-center px-6 py-3.5 font-semibold text-sm rounded-xl border border-[var(--border-color)] text-[var(--foreground)] hover:border-[var(--primary)] transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] shadow-2xs"
                 >
                   Return to Website
                 </a>

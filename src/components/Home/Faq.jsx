@@ -89,10 +89,6 @@ export default function Faq() {
               : "opacity-0 translate-y-8"
           }`}
         >
-          <div className="inline-flex items-center justify-center gap-2 px-3 py-1 rounded-full border border-[var(--border-color)] bg-[var(--card-bg)] text-xs font-semibold text-[var(--primary)] mb-5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-            <span>Straight answers</span>
-          </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight text-[var(--foreground)]">
             The questions everyone asks. Answered plainly.
           </h2>

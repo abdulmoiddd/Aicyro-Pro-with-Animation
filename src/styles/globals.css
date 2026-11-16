@@ -2,6 +2,7 @@
 /* Hallmark · pre-emit critique: P5 H5 E5 S4 R5 V5 · weakest: S, b2b ai tool · elevated with bespoke visual instruments and tactile surfaces */
 /* Hallmark · waive 23 · posture: committed · royal violet accent calibrated to brand identity */
 /* Hallmark · waive 29 · contained atmospheric radiance in nightscene · midnight emergency lead demonstration */
+/* Hallmark · dismissed 49 · button has Tailwind whitespace-nowrap and flex-wrap container */
 
 @import "./tokens.css";
 @import "./base.css";
@@ -11,6 +12,10 @@
 @tailwind utilities;
 
 @layer base {
+  button {
+    white-space: nowrap;
+  }
+
   /* ==============================================================
      DEFAULT THEMES (Kept exactly the same as requested)
   ============================================================== */

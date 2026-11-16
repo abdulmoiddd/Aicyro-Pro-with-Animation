@@ -1,6 +1,9 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { ArrowLeft, Home, Compass, Radio } from "lucide-react";
 
 export default function Custom404() {
   const router = useRouter();
@@ -8,7 +11,7 @@ export default function Custom404() {
   const [isHovering, setIsHovering] = useState(false);
   const eyeRef = useRef(null);
 
-  // Track mouse movement for interactive eye tracking
+  // Track cursor position for tactile radar tracking
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (eyeRef.current) {
@@ -17,7 +20,7 @@ export default function Custom404() {
         const centerY = rect.top + rect.height / 2;
         
         const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
-        const distance = Math.min(12, Math.hypot(e.clientX - centerX, e.clientY - centerY) / 20);
+        const distance = Math.min(14, Math.hypot(e.clientX - centerX, e.clientY - centerY) / 22);
         
         setPupilPos({
           x: Math.cos(angle) * distance,
@@ -31,9 +34,9 @@ export default function Custom404() {
   }, []);
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-[var(--background)] text-[var(--foreground)] overflow-hidden font-sans py-16 px-6">
+    <div className="relative min-h-screen flex items-center justify-center bg-[var(--background)] text-[var(--foreground)] overflow-hidden font-sans py-16 px-6 transition-colors duration-200">
       
-      {/* Background Grid Pattern */}
+      {/* Background Decorative Grid */}
       <div 
         className="absolute inset-0 pointer-events-none opacity-20"
         style={{
@@ -49,93 +52,92 @@ export default function Custom404() {
       />
 
       {/* Main 404 Container */}
-      <div className="relative z-10 flex flex-col items-center w-full max-w-2xl text-center">
+      <div className="relative z-10 flex flex-col items-center w-full max-w-xl text-center">
         
-        {/* Interactive AI Radar "Eye" */}
+        {/* Interactive Telemetry Beacon */}
         <div
           ref={eyeRef}
-          className="relative w-32 h-32 mb-6 cursor-pointer"
+          className="relative w-32 h-32 mb-8 cursor-pointer group"
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
           aria-hidden="true"
         >
-          {/* Outer Pulsing Rings */}
-          <div className="absolute inset-0 rounded-full border border-[var(--primary)] opacity-30" />
-          <div className="absolute inset-2 rounded-full border border-[var(--primary)] opacity-50 animate-[spin_6s_linear_infinite] border-t-transparent" />
-          <div className="absolute inset-5 rounded-full border border-[var(--secondary)] opacity-60 animate-[spin_4s_linear_infinite_reverse] border-b-transparent" />
+          {/* Outer Pulsing Radar Rings */}
+          <div className="absolute inset-0 rounded-full border border-[var(--border-color)]" />
+          <div className="absolute inset-2 rounded-full border border-[var(--primary)]/30 motion-safe:animate-[spin_10s_linear_infinite] border-t-transparent" />
+          <div className="absolute inset-5 rounded-full border border-[var(--primary)]/50 motion-safe:animate-[spin_6s_linear_infinite_reverse] border-b-transparent" />
 
-          {/* Center Core (Tracks Mouse) */}
+          {/* Core Sensor (Follows Cursor) */}
           <div
-            className={`absolute inset-7 rounded-full bg-[var(--primary)] flex items-center justify-center transition-[transform,background-color] duration-150 ease-out ${
+            className={`absolute inset-7 rounded-full bg-[var(--card-bg)] border-2 border-[var(--primary)] flex items-center justify-center shadow-sm motion-safe:transition-transform duration-100 ease-out ${
               isHovering ? "scale-105" : "scale-100"
             }`}
             style={{ 
               transform: `translate(${pupilPos.x}px, ${pupilPos.y}px)`
             }}
           >
-            {/* Inner Pupil Glow */}
-            <div className="w-4 h-4 bg-[var(--color-accent-ink)] rounded-full" />
+            <div className="w-4 h-4 bg-[var(--primary)] rounded-full flex items-center justify-center">
+              <span className="w-1.5 h-1.5 bg-[var(--color-accent-ink)] rounded-full" />
+            </div>
           </div>
         </div>
 
-        {/* 404 Eyebrow */}
-        <div className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[var(--card-bg)] text-[var(--primary)] border border-[var(--border-color)] mb-4 inline-flex items-center gap-2 shadow-sm">
-          <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-          <span>Signal 404 · Destination Not Found</span>
+        {/* Status Pill */}
+        <div className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[var(--card-bg)] text-[var(--foreground)] border border-[var(--border-color)] mb-6 inline-flex items-center gap-2 shadow-2xs">
+          <span className="w-2 h-2 rounded-full bg-[var(--logo-politico-red)] motion-safe:animate-pulse" aria-hidden="true" />
+          <span>Signal 404: Route Not Resolved</span>
         </div>
 
-        {/* Giant 404 Number */}
-        <h1 className="text-7xl sm:text-9xl font-black leading-none text-[var(--foreground)] tracking-tight select-none mb-6">
+        {/* Display Heading */}
+        <h1 className="text-7xl sm:text-8xl font-black text-[var(--foreground)] tracking-tight tabular-nums select-none mb-4 leading-none">
           404
         </h1>
 
-        {/* Card */}
-        <div className="bg-[var(--card-bg)] border border-[var(--border-color)] rounded-2xl p-8 sm:p-10 text-center shadow-lg w-full">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--foreground)] tracking-tight mb-3">
-            Signal Lost in the Mainframe
+        {/* Content Card */}
+        <div className="bg-[var(--card-bg)] border border-[var(--border-color)] rounded-2xl p-6 sm:p-8 text-center shadow-xs w-full mb-6">
+          <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--primary)] mb-2">
+            <Radio size={14} aria-hidden="true" />
+            <span>Autonomous Dispatch Error</span>
+          </div>
+
+          <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)] tracking-tight mb-3">
+            This destination is off the network.
           </h2>
-          <p className="text-[var(--foreground-muted)] text-sm sm:text-base mb-8 max-w-md mx-auto leading-relaxed">
-            The AI searched the entire database, but the page you are looking
-            for doesn't exist, has been moved, or is temporarily offline.
+
+          <p className="text-[var(--foreground-muted)] text-sm sm:text-base mb-6 max-w-md mx-auto leading-relaxed text-pretty">
+            The page you requested does not exist, has been archived, or was moved. CloseDesk monitors all incoming traffic, but this route leads nowhere.
           </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               onClick={() => router.back()}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl border border-[var(--border-color)] text-[var(--foreground)] text-sm font-semibold bg-[var(--background)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-[var(--border-color)] text-[var(--foreground)] text-sm font-semibold bg-[var(--background)] hover:border-[var(--primary)] transition-colors duration-150 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] disabled:opacity-50 disabled:pointer-events-none shadow-2xs whitespace-nowrap"
             >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                aria-hidden="true"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              Go Back
+              <ArrowLeft size={16} aria-hidden="true" />
+              <span>Go Back</span>
             </button>
 
             <Link
               href="/"
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[var(--primary)] hover:bg-[var(--secondary)] text-[var(--color-accent-ink)] text-sm font-semibold shadow-sm transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[var(--primary)] hover:bg-[var(--secondary)] text-[var(--color-accent-ink)] text-sm font-bold transition-colors duration-150 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] shadow-xs whitespace-nowrap"
             >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                aria-hidden="true"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-              </svg>
-              Navigate Home
+              <Home size={16} aria-hidden="true" />
+              <span>Return Home</span>
             </Link>
           </div>
         </div>
+
+        {/* Quick Diagnostic Strip */}
+        <div className="flex items-center gap-4 text-xs text-[var(--foreground-muted)]">
+          <span className="flex items-center gap-1.5">
+            <Compass size={13} className="text-[var(--primary)]" aria-hidden="true" />
+            <span>Gateway Online</span>
+          </span>
+          <span className="text-[var(--border-color)]" aria-hidden="true">|</span>
+          <span className="tabular-nums">Code: ERR_PATH_UNMAPPED</span>
+        </div>
+
       </div>
     </div>
   );

@@ -1,17 +1,39 @@
+// src/pages/termofuse.jsx
+"use client";
+
 import React from "react";
 import Seo from "../components/Essential/Seo";
 import Navbar from "../components/Essential/Navbar";
 import Footer from "../components/Essential/Footer";
+import { ShieldCheck, Scale, ExternalLink } from "lucide-react";
 
 export default function TermsOfService() {
+  const sections = [
+    { id: "acceptance", title: "1. Acceptance of Terms" },
+    { id: "about", title: "2. About AICYRO" },
+    { id: "usage", title: "3. Use of the Website" },
+    { id: "ip", title: "4. Intellectual Property" },
+    { id: "proposals", title: "5. Service Proposals and Agreements" },
+    { id: "submissions", title: "6. User Submissions" },
+    { id: "third-party", title: "7. Third-Party Services" },
+    { id: "warranties", title: "8. Disclaimer of Warranties" },
+    { id: "liability", title: "9. Limitation of Liability" },
+    { id: "indemnification", title: "10. Indemnification" },
+    { id: "confidentiality", title: "11. Confidentiality" },
+    { id: "termination", title: "12. Termination" },
+    { id: "governing", title: "13. Governing Law" },
+    { id: "changes", title: "14. Changes to These Terms" },
+    { id: "contact", title: "15. Contact Information" },
+  ];
+
   return (
-    <div className="relative min-h-screen flex flex-col bg-[var(--background)] text-[var(--foreground)] font-sans transition-colors duration-300">
+    <div className="relative min-h-screen flex flex-col bg-[var(--background)] text-[var(--foreground)] font-sans transition-colors duration-200">
       <Seo
         title="Terms of Service | Aicyro"
         description="Read the Terms of Service for Aicyro. Understand the rules and regulations governing the use of our website and services."
       />
 
-      {/* Subtle Grid Background */}
+      {/* Decorative Grid Background */}
       <div
         className="fixed inset-0 pointer-events-none opacity-20"
         style={{
@@ -28,291 +50,317 @@ export default function TermsOfService() {
 
       <Navbar />
 
-      {/* Main Content */}
-      <main className="relative z-10 flex-grow max-w-4xl mx-auto px-6 py-24 md:py-32 w-full">
-        {/* Header */}
-        <div className="mb-10 border-b border-[var(--border-color)] pb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--border-color)] bg-[var(--card-bg)] text-xs font-semibold text-[var(--primary)] mb-4 shadow-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-            <span>Legal &amp; Compliance</span>
+      <main className="relative z-10 flex-grow max-w-[var(--container)] mx-auto px-6 pt-28 sm:pt-36 pb-20 w-full">
+        {/* Document Masthead */}
+        <div className="mb-12 border-b border-[var(--border-color)] pb-8 max-w-4xl">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[var(--border-color)] bg-[var(--card-bg)] text-xs font-semibold text-[var(--foreground)] mb-6 shadow-2xs">
+            <span className="w-2 h-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />
+            <span>Master Service Terms</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight text-[var(--foreground)]">
+
+          <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-[var(--foreground)] leading-[1.1] mb-4 text-balance">
             Terms of Service
           </h1>
-          <p className="text-[var(--foreground-muted)] text-sm sm:text-base">
-            Effective Date: June 8, 2026
-          </p>
+
+          <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-[var(--foreground-muted)]">
+            <span className="tabular-nums">Effective Date: June 8, 2026</span>
+            <span className="text-[var(--border-color)]" aria-hidden="true">•</span>
+            <span>Worldwide Commercial Agreement</span>
+          </div>
         </div>
 
-        {/* Content Card */}
-        <div className="space-y-10 leading-relaxed text-[var(--foreground)] bg-[var(--card-bg)] border border-[var(--border-color)] rounded-2xl p-8 md:p-12 shadow-sm">
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-              1. Acceptance of Terms
-            </h2>
-            <p className="text-[var(--foreground-muted)] mb-3 text-sm sm:text-base">
-              Welcome to AICYRO ("Company," "we," "our," or "us"). By accessing
-              or using our website, products, services, software, or related
-              offerings, you agree to be bound by these Terms of Service
-              ("Terms").
-            </p>
-            <p className="font-semibold text-[var(--primary)] text-sm sm:text-base">
-              If you do not agree with these Terms, please do not use our
-              website or services.
-            </p>
-          </section>
+        {/* 12-Column Grid: Sticky Index Sidebar + Reading Track */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+          
+          {/* Table of Contents Sticky Sidebar (Columns 1-4) */}
+          <aside className="lg:col-span-4 lg:sticky lg:top-28 space-y-6">
+            <div className="p-6 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-xs">
+              <span className="text-xs font-bold text-[var(--foreground)] block mb-4">
+                Table of Contents
+              </span>
+              <nav className="space-y-1.5 max-h-[60vh] overflow-y-auto pr-2">
+                {sections.map((s) => (
+                  <a
+                    key={s.id}
+                    href={`#${s.id}`}
+                    className="block text-xs sm:text-sm font-medium text-[var(--foreground-muted)] hover:text-[var(--primary)] transition-colors duration-150 py-1"
+                  >
+                    {s.title}
+                  </a>
+                ))}
+              </nav>
+            </div>
 
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-              2. About AICYRO
-            </h2>
-            <p className="text-[var(--foreground-muted)] text-sm sm:text-base">
-              AICYRO provides artificial intelligence solutions, software
-              development, automation services, chatbot systems, consulting,
-              customer engagement technologies, and related business services to
-              clients worldwide.
-            </p>
-          </section>
+            {/* Fair Use Pod */}
+            <div className="p-6 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-xs">
+              <div className="flex items-center gap-2.5 text-[var(--primary)] font-bold text-xs mb-3">
+                <Scale size={18} aria-hidden="true" />
+                <span>Commercial Fairness</span>
+              </div>
+              <p className="text-xs text-[var(--foreground-muted)] leading-relaxed">
+                Clear deliverables, capped liability, intellectual property protection, and transparent dispute resolution procedures.
+              </p>
+            </div>
+          </aside>
 
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-              3. Use of the Website
-            </h2>
-            <p className="text-[var(--foreground-muted)] mb-3 text-sm sm:text-base">
-              You agree to use the website only for lawful purposes and in
-              accordance with these Terms. You agree not to:
-            </p>
-            <ul className="list-disc pl-6 space-y-2 text-[var(--foreground-muted)] text-sm sm:text-base">
-              <li>Violate any applicable laws or regulations.</li>
-              <li>Attempt unauthorized access to systems or networks.</li>
-              <li>Interfere with website functionality or security.</li>
-              <li>Upload malicious software, viruses, or harmful code.</li>
-              <li>Use the website to distribute spam or fraudulent content.</li>
-            </ul>
-          </section>
+          {/* Document Content Track (Columns 5-12) */}
+          <div className="lg:col-span-8 space-y-8 max-w-[70ch]">
+            
+            {/* Section 1 */}
+            <section id="acceptance" className="p-8 sm:p-10 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-xs scroll-mt-28">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--primary)] mb-2">
+                <span>Section 01</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] tracking-tight">
+                1. Acceptance of Terms
+              </h2>
+              <div className="space-y-4 text-sm sm:text-base text-[var(--foreground-muted)] leading-relaxed">
+                <p>
+                  Welcome to AICYRO ("Company," "we," "our," or "us"). By accessing
+                  or using our website, products, services, software, or related
+                  offerings, you agree to be bound by these Terms of Service
+                  ("Terms").
+                </p>
+                <div className="p-3.5 rounded-xl bg-[var(--primary)]/5 border border-[var(--primary)]/20 text-xs sm:text-sm font-semibold text-[var(--primary)]">
+                  If you do not agree with these Terms, please do not use our website or services.
+                </div>
+              </div>
+            </section>
 
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-              4. Intellectual Property
-            </h2>
-            <p className="text-[var(--foreground-muted)] mb-3 text-sm sm:text-base">
-              All content on this website, including but not limited to:
-            </p>
-            <ul className="list-disc pl-6 mb-4 space-y-2 text-[var(--foreground-muted)] text-sm sm:text-base">
-              <li>Logos and brand assets</li>
-              <li>Trademarks</li>
-              <li>Text, copywriting, and documentation</li>
-              <li>Graphics, animations, and diagrams</li>
-              <li>Software and proprietary algorithms</li>
-              <li>Designs and user interfaces</li>
-              <li>AI solutions and proprietary methodologies</li>
-            </ul>
-            <p className="text-[var(--foreground-muted)] text-sm sm:text-base">
-              are owned by or licensed to AICYRO and protected by applicable
-              intellectual property laws. No content may be copied, reproduced,
-              distributed, or modified without prior written permission.
-            </p>
-          </section>
+            {/* Section 2 */}
+            <section id="about" className="p-8 sm:p-10 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-xs scroll-mt-28">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--primary)] mb-2">
+                <span>Section 02</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] tracking-tight">
+                2. About AICYRO
+              </h2>
+              <p className="text-sm sm:text-base text-[var(--foreground-muted)] leading-relaxed">
+                AICYRO provides artificial intelligence solutions, software
+                development, automation services, chatbot systems, consulting,
+                customer engagement technologies, and related business services to
+                clients worldwide.
+              </p>
+            </section>
 
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-              5. Service Proposals and Agreements
-            </h2>
-            <p className="text-[var(--foreground-muted)] mb-3 text-sm sm:text-base">
-              Any proposal, quotation, statement of work, or service agreement
-              provided by AICYRO constitutes a separate contractual arrangement
-              and may contain additional terms.
-            </p>
-            <p className="text-[var(--foreground-muted)] text-sm sm:text-base">
-              In the event of a conflict between these Terms and a signed
-              agreement, the signed agreement shall prevail.
-            </p>
-          </section>
+            {/* Section 3 */}
+            <section id="usage" className="p-8 sm:p-10 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-xs scroll-mt-28">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--primary)] mb-2">
+                <span>Section 03</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] tracking-tight">
+                3. Use of the Website
+              </h2>
+              <div className="text-sm sm:text-base text-[var(--foreground-muted)] leading-relaxed">
+                <p className="mb-3">
+                  You agree to use the website only for lawful purposes and in accordance with these Terms. You agree not to:
+                </p>
+                <ul className="list-disc pl-5 space-y-1.5 text-xs sm:text-sm">
+                  <li>Violate any applicable laws or statutory regulations.</li>
+                  <li>Attempt unauthorized access to our systems, servers, or networks.</li>
+                  <li>Interfere with website functionality, speed, or cryptographic security.</li>
+                  <li>Upload malicious code, automated bots, or exploitative scripts.</li>
+                  <li>Use the website to distribute spam, unsolicited communications, or fraudulent content.</li>
+                </ul>
+              </div>
+            </section>
 
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-              6. User Submissions
-            </h2>
-            <p className="text-[var(--foreground-muted)] mb-3 text-sm sm:text-base">
-              Information submitted through contact forms, chat systems, demo
-              requests, or other communication channels may be used to respond
-              to inquiries and provide services in accordance with our Privacy
-              Policy.
-            </p>
-            <p className="text-[var(--foreground-muted)] text-sm sm:text-base">
-              You represent that any information submitted is accurate and
-              lawful.
-            </p>
-          </section>
+            {/* Section 4 */}
+            <section id="ip" className="p-8 sm:p-10 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-xs scroll-mt-28">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--primary)] mb-2">
+                <span>Section 04</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] tracking-tight">
+                4. Intellectual Property
+              </h2>
+              <div className="text-sm sm:text-base text-[var(--foreground-muted)] leading-relaxed space-y-3">
+                <p>
+                  All content on this website, including logos, brand marks, copywriting, graphics, diagrams, software code, UI designs, and proprietary AI workflows, are the exclusive property of AICYRO.
+                </p>
+                <p>
+                  No content may be copied, reproduced, distributed, or modified without prior written authorization from AICYRO.
+                </p>
+              </div>
+            </section>
 
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-              7. Third-Party Services
-            </h2>
-            <p className="text-[var(--foreground-muted)] mb-3 text-sm sm:text-base">
-              Our website may contain links to third-party websites, platforms,
-              or services.
-            </p>
-            <p className="text-[var(--foreground-muted)] text-sm sm:text-base">
-              AICYRO is not responsible for the content, privacy practices,
-              availability, or security of third-party services. Use of
-              third-party services is subject to their own terms and policies.
-            </p>
-          </section>
+            {/* Section 5 */}
+            <section id="proposals" className="p-8 sm:p-10 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-xs scroll-mt-28">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--primary)] mb-2">
+                <span>Section 05</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] tracking-tight">
+                5. Service Proposals and Agreements
+              </h2>
+              <div className="text-sm sm:text-base text-[var(--foreground-muted)] leading-relaxed space-y-2">
+                <p>
+                  Any formal proposal, scope of work, or service contract signed between AICYRO and a client constitutes an independent binding agreement.
+                </p>
+                <p>
+                  In the event of any specific conflict between these general website Terms and a signed master service agreement, the signed agreement prevails.
+                </p>
+              </div>
+            </section>
 
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-              8. Disclaimer of Warranties
-            </h2>
-            <p className="text-[var(--foreground-muted)] mb-3 text-sm sm:text-base">
-              The website and services are provided on an "as is" and "as
-              available" basis. To the maximum extent permitted by law, AICYRO
-              disclaims all warranties, whether express or implied, including
-              but not limited to:
-            </p>
-            <ul className="list-disc pl-6 mb-4 space-y-2 text-[var(--foreground-muted)] text-sm sm:text-base">
-              <li>Merchantability</li>
-              <li>Fitness for a particular purpose</li>
-              <li>Non-infringement</li>
-              <li>Availability or uninterrupted operation</li>
-            </ul>
-            <p className="text-[var(--foreground-muted)] text-sm sm:text-base">
-              We do not guarantee that the website will be error-free, secure,
-              or continuously available.
-            </p>
-          </section>
+            {/* Section 6 */}
+            <section id="submissions" className="p-8 sm:p-10 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-xs scroll-mt-28">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--primary)] mb-2">
+                <span>Section 06</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] tracking-tight">
+                6. User Submissions
+              </h2>
+              <p className="text-sm sm:text-base text-[var(--foreground-muted)] leading-relaxed">
+                Information submitted via audit intake forms, lead modals, or contact desks is processed in accordance with our Privacy Policy. You represent that all submitted contact details and domain URLs are accurate and lawfully owned or authorized.
+              </p>
+            </section>
 
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-              9. Limitation of Liability
-            </h2>
-            <p className="text-[var(--foreground-muted)] mb-3 text-sm sm:text-base">
-              To the fullest extent permitted by law, AICYRO shall not be liable
-              for any indirect, incidental, special, consequential, or punitive
-              damages arising from:
-            </p>
-            <ul className="list-disc pl-6 mb-4 space-y-2 text-[var(--foreground-muted)] text-sm sm:text-base">
-              <li>Website usage</li>
-              <li>Service interruptions</li>
-              <li>Loss of profits</li>
-              <li>Loss of data</li>
-              <li>Business interruption</li>
-            </ul>
-            <p className="font-semibold text-[var(--primary)] text-sm sm:text-base">
-              Our total liability shall not exceed the amount paid by the
-              customer for the applicable service during the preceding twelve
-              months.
-            </p>
-          </section>
+            {/* Section 7 */}
+            <section id="third-party" className="p-8 sm:p-10 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-xs scroll-mt-28">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--primary)] mb-2">
+                <span>Section 07</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] tracking-tight">
+                7. Third-Party Services
+              </h2>
+              <p className="text-sm sm:text-base text-[var(--foreground-muted)] leading-relaxed">
+                External tools (such as Calendly, CRM platforms, and telecom gateways) maintain their own independent terms of service and privacy practices. AICYRO is not liable for third-party service interruptions.
+              </p>
+            </section>
 
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-              10. Indemnification
-            </h2>
-            <p className="text-[var(--foreground-muted)] mb-3 text-sm sm:text-base">
-              You agree to indemnify and hold harmless AICYRO, its employees,
-              contractors, affiliates, and partners from claims, liabilities,
-              damages, costs, and expenses arising from:
-            </p>
-            <ul className="list-disc pl-6 space-y-2 text-[var(--foreground-muted)] text-sm sm:text-base">
-              <li>Violation of these Terms</li>
-              <li>Misuse of the website</li>
-              <li>Violation of applicable laws</li>
-              <li>Infringement of third-party rights</li>
-            </ul>
-          </section>
+            {/* Section 8 */}
+            <section id="warranties" className="p-8 sm:p-10 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-xs scroll-mt-28">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--primary)] mb-2">
+                <span>Section 08</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] tracking-tight">
+                8. Disclaimer of Warranties
+              </h2>
+              <p className="text-sm sm:text-base text-[var(--foreground-muted)] leading-relaxed">
+                Website materials and automated audit estimations are provided on an “as is” and “as available” basis without express or implied warranties of error-free operation or uninterrupted uptime.
+              </p>
+            </section>
 
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-              11. Confidentiality
-            </h2>
-            <p className="text-[var(--foreground-muted)] text-sm sm:text-base">
-              Any confidential information exchanged during business
-              discussions, project delivery, or consulting engagements shall
-              remain confidential unless otherwise agreed in writing.
-            </p>
-          </section>
+            {/* Section 9 */}
+            <section id="liability" className="p-8 sm:p-10 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-xs scroll-mt-28">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--primary)] mb-2">
+                <span>Section 09</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] tracking-tight">
+                9. Limitation of Liability
+              </h2>
+              <div className="text-sm sm:text-base text-[var(--foreground-muted)] leading-relaxed space-y-3">
+                <p>
+                  To the maximum extent permitted by applicable law, AICYRO disclaims liability for indirect, incidental, or consequential losses resulting from website downtime or missed lead submissions.
+                </p>
+                <div className="p-3.5 rounded-xl bg-[var(--primary)]/5 border border-[var(--primary)]/20 text-xs sm:text-sm font-semibold text-[var(--primary)]">
+                  Total cumulative liability shall not exceed the amount paid by the customer during the preceding twelve months.
+                </div>
+              </div>
+            </section>
 
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-              12. Termination
-            </h2>
-            <p className="text-[var(--foreground-muted)] text-sm sm:text-base">
-              We reserve the right to suspend or terminate access to the website
-              or services at our sole discretion if these Terms are violated.
-            </p>
-          </section>
+            {/* Section 10 */}
+            <section id="indemnification" className="p-8 sm:p-10 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-xs scroll-mt-28">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--primary)] mb-2">
+                <span>Section 10</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] tracking-tight">
+                10. Indemnification
+              </h2>
+              <p className="text-sm sm:text-base text-[var(--foreground-muted)] leading-relaxed">
+                You agree to indemnify and hold harmless AICYRO, its officers, contractors, and affiliates from third-party liabilities, damages, and reasonable legal costs resulting from unlawful misuse of our services.
+              </p>
+            </section>
 
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-              13. Governing Law
-            </h2>
-            <p className="text-[var(--foreground-muted)] text-sm sm:text-base">
-              These Terms shall be governed by and interpreted in accordance
-              with the laws applicable to the jurisdiction in which AICYRO is
-              registered, without regard to conflict of law principles.
-            </p>
-          </section>
+            {/* Section 11 */}
+            <section id="confidentiality" className="p-8 sm:p-10 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-xs scroll-mt-28">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--primary)] mb-2">
+                <span>Section 11</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] tracking-tight">
+                11. Confidentiality
+              </h2>
+              <p className="text-sm sm:text-base text-[var(--foreground-muted)] leading-relaxed">
+                All non-public commercial discussions, software demonstrations, workflows, and lead volumes shared between parties remain strictly confidential.
+              </p>
+            </section>
 
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-              14. Changes to These Terms
-            </h2>
-            <p className="text-[var(--foreground-muted)] mb-3 text-sm sm:text-base">
-              We may update these Terms at any time.
-            </p>
-            <p className="text-[var(--foreground-muted)] text-sm sm:text-base">
-              Continued use of the website following publication of updated
-              Terms constitutes acceptance of the revised version.
-            </p>
-          </section>
+            {/* Section 12 */}
+            <section id="termination" className="p-8 sm:p-10 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-xs scroll-mt-28">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--primary)] mb-2">
+                <span>Section 12</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] tracking-tight">
+                12. Termination
+              </h2>
+              <p className="text-sm sm:text-base text-[var(--foreground-muted)] leading-relaxed">
+                We reserve the right to suspend or revoke access to our website or APIs immediately upon any material breach of these terms.
+              </p>
+            </section>
 
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-              15. Contact Information
-            </h2>
-            <p className="text-[var(--foreground-muted)] mb-4 text-sm sm:text-base">
-              For legal inquiries, please contact us using the information
-              below:
-            </p>
-            <address className="not-italic bg-[var(--background)] p-6 rounded-xl border border-[var(--border-color)] mb-6">
-              <strong className="text-[var(--foreground)] block mb-1 text-base font-bold">
-                AICYRO
-              </strong>
-              <span className="text-[var(--foreground-muted)] text-sm">Email: </span>
-              <a
-                href="mailto:info@aicyro.com"
-                className="text-[var(--primary)] hover:underline font-medium text-sm"
-              >
-                info@aicyro.com
-              </a>
-              <br />
-              <span className="text-[var(--foreground-muted)] text-sm">Website: </span>
-              <a
-                href="https://aicyro.com"
-                className="text-[var(--primary)] hover:underline font-medium text-sm"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                https://aicyro.com
-              </a>
-            </address>
-          </section>
+            {/* Section 13 */}
+            <section id="governing" className="p-8 sm:p-10 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-xs scroll-mt-28">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--primary)] mb-2">
+                <span>Section 13</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] tracking-tight">
+                13. Governing Law
+              </h2>
+              <p className="text-sm sm:text-base text-[var(--foreground-muted)] leading-relaxed">
+                These Terms are governed by and construed under the laws of the jurisdiction in which AICYRO is registered, without reference to conflict-of-law doctrines.
+              </p>
+            </section>
+
+            {/* Section 14 */}
+            <section id="changes" className="p-8 sm:p-10 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-xs scroll-mt-28">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--primary)] mb-2">
+                <span>Section 14</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] tracking-tight">
+                14. Changes to These Terms
+              </h2>
+              <p className="text-sm sm:text-base text-[var(--foreground-muted)] leading-relaxed">
+                We may periodically update these Terms. Continued access to the website following publication constitutes voluntary agreement with revised conditions.
+              </p>
+            </section>
+
+            {/* Section 15 */}
+            <section id="contact" className="p-8 sm:p-10 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-xs scroll-mt-28">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--primary)] mb-2">
+                <span>Section 15</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[var(--foreground)] tracking-tight">
+                15. Contact Information
+              </h2>
+              <address className="not-italic bg-[var(--background)] p-6 rounded-xl border border-[var(--border-color)] mt-4 block space-y-2">
+                <strong className="text-[var(--foreground)] block text-base font-bold">
+                  AICYRO Legal Affairs
+                </strong>
+                <div className="text-sm text-[var(--foreground-muted)]">
+                  <span>Email: </span>
+                  <a
+                    href="mailto:info@aicyro.com"
+                    className="text-[var(--primary)] hover:underline font-medium inline-flex items-center gap-1"
+                  >
+                    <span>info@aicyro.com</span>
+                    <ExternalLink size={12} aria-hidden="true" />
+                  </a>
+                </div>
+                <div className="text-sm text-[var(--foreground-muted)]">
+                  <span>Website: </span>
+                  <a
+                    href="https://aicyro.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[var(--primary)] hover:underline font-medium inline-flex items-center gap-1"
+                  >
+                    <span>https://aicyro.com</span>
+                    <ExternalLink size={12} aria-hidden="true" />
+                  </a>
+                </div>
+              </address>
+            </section>
+
+          </div>
         </div>
       </main>
 

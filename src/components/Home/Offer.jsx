@@ -49,11 +49,6 @@ export default function Offer({ onOpenPopup }) {
           <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-14 p-8 sm:p-12 lg:p-14 items-center">
             {/* Left Column: Offer Details */}
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--border-color)] bg-[var(--background)] text-xs font-semibold text-[var(--primary)] mb-5">
-                <span className="w-1.5 h-1.5 bg-[var(--primary)] rounded-full" aria-hidden="true" />
-                <span>Founding 25 Launch Program</span>
-              </div>
-
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-5 tracking-tight text-[var(--foreground)] leading-[1.15]">
                 Founder pricing, locked for life.
               </h2>

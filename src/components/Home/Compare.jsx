@@ -181,12 +181,6 @@ export default function Compare() {
               : "opacity-0 translate-y-6"
           }`}
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[var(--border-color)] bg-[var(--card-bg)] mb-5 shadow-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)] animate-pulse" aria-hidden="true" />
-            <span className="text-xs font-medium text-[var(--foreground-muted)]">
-              Compare your options
-            </span>
-          </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5 tracking-tight text-[var(--foreground)] leading-tight">
             CloseDesk vs. everything else you&apos;re considering.
           </h2>

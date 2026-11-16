@@ -129,12 +129,6 @@ export default function Problem() {
               : "opacity-0 translate-y-6"
           }`}
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[var(--border-color)] bg-[var(--card-bg)] mb-5 shadow-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)] animate-pulse" aria-hidden="true" />
-            <span className="text-xs font-medium text-[var(--foreground-muted)]">
-              The Leak in Your Website
-            </span>
-          </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-5 text-balance leading-[1.12] text-[var(--foreground)]">
             You&apos;re paying for traffic.
             <br className="hidden sm:block" />
