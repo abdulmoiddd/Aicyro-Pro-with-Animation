@@ -6,19 +6,24 @@ import { ShieldCheck } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="relative w-full border-t border-[var(--border-color)] bg-[var(--footer-bg)]/80 backdrop-blur-md pt-16 pb-8 px-6 md:px-12 lg:px-24 text-[var(--foreground-muted)] z-10 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
+    <footer className="relative w-full border-t border-[var(--border-color)] bg-[var(--footer-bg)]/90 backdrop-blur-md pt-16 pb-8 px-6 md:px-12 lg:px-24 text-[var(--foreground-muted)] z-10 transition-colors duration-200">
+      <div className="max-w-[var(--container)] mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
         {/* Brand & Description Column */}
         <div className="md:col-span-5">
-          <Link href="/#top" className="inline-flex items-center gap-3 mb-6 group cursor-pointer select-none">
+          <Link
+            href="/#top"
+            className="inline-flex items-center gap-3 mb-6 group cursor-pointer select-none rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+            aria-label="CloseDesk Home"
+          >
             {/* Dynamic SVG Icon */}
-            <div className="w-10 h-10 transition-transform duration-300 group-hover:scale-105 group-hover:rotate-[-4deg]">
+            <div className="w-10 h-10 motion-safe:transition-transform duration-200 motion-safe:group-hover:scale-105">
               <svg
                 id="Layer_1"
                 data-name="Layer 1"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 100 100"
-                className="w-full h-full drop-shadow-[0_2px_8px_var(--lead-glow)]"
+                className="w-full h-full"
+                aria-hidden="true"
               >
                 <path
                   fill="var(--primary)"
@@ -40,16 +45,16 @@ export default function Footer() {
             </div>
 
             <div className="flex items-baseline gap-2">
-              <span className="font-black text-xl tracking-tight text-[var(--foreground)] transition-colors group-hover:text-[var(--primary)]">
+              <span className="font-bold text-xl tracking-tight text-[var(--foreground)] transition-colors duration-150 group-hover:text-[var(--primary)]">
                 Close<em className="not-italic text-[var(--primary)]">Desk</em>
               </span>
-              <span className="hidden sm:block font-mono text-[10px] text-[var(--foreground-muted)] tracking-widest uppercase opacity-80">
+              <span className="hidden sm:block text-xs text-[var(--foreground-muted)] font-normal">
                 by Aicyro
               </span>
             </div>
           </Link>
 
-          <p className="leading-relaxed max-w-sm text-sm">
+          <p className="leading-relaxed max-w-sm text-sm text-[var(--foreground-muted)]">
             CloseDesk by Aicyro — the 24/7 AI booking desk for field-service
             businesses. Stop losing website visitors to faster competitors.
           </p>
@@ -59,14 +64,14 @@ export default function Footer() {
         <div className="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8">
           {/* Platform Links */}
           <div>
-            <h4 className="text-[var(--foreground)] font-semibold mb-4 uppercase tracking-wider text-xs font-mono">
+            <h4 className="text-[var(--foreground)] font-semibold mb-4 text-sm">
               Platform
             </h4>
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link
                   href="/#problem"
-                  className="inline-block hover:text-[var(--primary)] hover:translate-x-1 transition-all duration-200"
+                  className="inline-block text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors duration-150 rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
                 >
                   How it works
                 </Link>
@@ -74,7 +79,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/#compare"
-                  className="inline-block hover:text-[var(--primary)] hover:translate-x-1 transition-all duration-200"
+                  className="inline-block text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors duration-150 rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
                 >
                   Compare options
                 </Link>
@@ -82,15 +87,15 @@ export default function Footer() {
               <li>
                 <Link
                   href="/#notfor"
-                  className="inline-block hover:text-[var(--primary)] hover:translate-x-1 transition-all duration-200"
+                  className="inline-block text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors duration-150 rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
                 >
-                  Who it's not for
+                  Who it&apos;s not for
                 </Link>
               </li>
               <li>
                 <Link
                   href="/#pricing"
-                  className="inline-block hover:text-[var(--primary)] hover:translate-x-1 transition-all duration-200"
+                  className="inline-block text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors duration-150 rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
                 >
                   Pricing
                 </Link>
@@ -100,14 +105,14 @@ export default function Footer() {
 
           {/* Program Links */}
           <div>
-            <h4 className="text-[var(--foreground)] font-semibold mb-4 uppercase tracking-wider text-xs font-mono">
+            <h4 className="text-[var(--foreground)] font-semibold mb-4 text-sm">
               Program
             </h4>
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link
                   href="/#founding25"
-                  className="inline-block hover:text-[var(--primary)] hover:translate-x-1 transition-all duration-200"
+                  className="inline-block text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors duration-150 rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
                 >
                   Founding 25 Launch
                 </Link>
@@ -115,7 +120,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/#trust"
-                  className="inline-block hover:text-[var(--primary)] hover:translate-x-1 transition-all duration-200"
+                  className="inline-block text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors duration-150 rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
                 >
                   Why trust us
                 </Link>
@@ -123,7 +128,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/#faq"
-                  className="inline-block hover:text-[var(--primary)] hover:translate-x-1 transition-all duration-200"
+                  className="inline-block text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors duration-150 rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
                 >
                   Straight answers
                 </Link>
@@ -131,7 +136,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/free-website-audit"
-                  className="inline-block hover:text-[var(--primary)] hover:translate-x-1 transition-all duration-200"
+                  className="inline-block text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors duration-150 rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
                 >
                   Free Lead Audit
                 </Link>
@@ -141,14 +146,14 @@ export default function Footer() {
 
           {/* Legal Links */}
           <div>
-            <h4 className="text-[var(--foreground)] font-semibold mb-4 uppercase tracking-wider text-xs font-mono">
+            <h4 className="text-[var(--foreground)] font-semibold mb-4 text-sm">
               Legal
             </h4>
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link
                   href="/privacy"
-                  className="inline-block hover:text-[var(--primary)] hover:translate-x-1 transition-all duration-200"
+                  className="inline-block text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors duration-150 rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
                 >
                   Privacy Policy
                 </Link>
@@ -156,7 +161,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/termofuse"
-                  className="inline-block hover:text-[var(--primary)] hover:translate-x-1 transition-all duration-200"
+                  className="inline-block text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors duration-150 rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
                 >
                   Terms of Service
                 </Link>
@@ -164,7 +169,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/cookie"
-                  className="inline-block hover:text-[var(--primary)] hover:translate-x-1 transition-all duration-200"
+                  className="inline-block text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors duration-150 rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
                 >
                   Cookie Policy
                 </Link>
@@ -175,13 +180,13 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar: Copyright & Data Ownership */}
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between pt-8 border-t border-[var(--border-color)] text-sm gap-4 md:gap-0">
-        <p className="text-center md:text-left text-xs sm:text-sm">
+      <div className="max-w-[var(--container)] mx-auto flex flex-col md:flex-row items-center justify-between pt-8 border-t border-[var(--border-color)] text-sm gap-4 md:gap-0">
+        <p className="text-center md:text-left text-xs sm:text-sm text-[var(--foreground-muted)]">
           © {new Date().getFullYear()} Aicyro. CloseDesk and Pulse are products
           of Aicyro. All rights reserved.
         </p>
-        <div className="flex items-center gap-2 text-[var(--primary)] bg-[var(--primary)]/10 border border-[var(--primary)]/20 px-4 py-2 rounded-full transition-transform hover:scale-[1.02] duration-300">
-          <ShieldCheck size={16} className="animate-pulse" />
+        <div className="flex items-center gap-2 text-[var(--foreground)] bg-[var(--card-bg)] border border-[var(--border-color)] px-4 py-2 rounded-full shadow-sm">
+          <ShieldCheck size={16} className="text-[var(--primary)] shrink-0" aria-hidden="true" />
           <span className="font-medium text-xs sm:text-sm">
             Your leads and conversations belong to you.
           </span>

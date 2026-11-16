@@ -1,3 +1,11 @@
+/* Hallmark · redesign: full · brand: CloseDesk · genre: modern-minimal · posture: committed · copy: verbatim */
+/* Hallmark · pre-emit critique: P5 H5 E5 S4 R5 V5 · weakest: S, b2b ai tool · elevated with bespoke visual instruments and tactile surfaces */
+/* Hallmark · waive 23 · posture: committed · royal violet accent calibrated to brand identity */
+/* Hallmark · waive 29 · contained atmospheric radiance in nightscene · midnight emergency lead demonstration */
+
+@import "./tokens.css";
+@import "./base.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -548,35 +556,35 @@ body {
 
 /* Theme-independent toast & alert notifications */
 .app-toast {
-  background-color: #ffffff;
-  border-color: #e2e8f0;
-  color: #0f172a;
+  background-color: var(--color-paper-light);
+  border-color: var(--color-rule-subtle);
+  color: var(--color-paper);
 }
 
 .app-toast-label {
-  color: #64748b;
+  color: var(--color-muted);
 }
 
 .app-toast-icon {
-  color: #22c55e;
+  color: var(--color-success);
 }
 
 .app-toast-icon-circle-success {
-  background-color: rgba(34, 197, 94, 0.15);
-  color: #22c55e;
+  background-color: var(--color-rule);
+  color: var(--color-success);
 }
 
 .app-toast-icon-circle-error {
-  background-color: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  background-color: var(--color-rule);
+  color: var(--color-error);
 }
 
 .app-toast-close {
-  color: #94a3b8;
+  color: var(--color-muted);
 }
 
 .app-toast-close:hover {
-  color: #0f172a;
+  color: var(--color-paper);
 }
 
 /* Lenis Inertial Smooth Scrolling */

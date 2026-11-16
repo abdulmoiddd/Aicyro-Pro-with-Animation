@@ -1,4 +1,3 @@
-import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import Seo from "../components/Essential/Seo";
 import Hero from "@/components/Home/Hero";
@@ -18,14 +17,9 @@ import CTA from "@/components/Home/Cta";
 
 export default function Home() {
   const canvasRef = useRef(null);
-  const cursorRef = useRef(null);
-  const [isHoverSupported, setIsHoverSupported] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
-    // Check if the device supports hover (desktop vs mobile)
-    setIsHoverSupported(window.matchMedia("(hover: hover)").matches);
-
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -81,14 +75,13 @@ export default function Home() {
     // Dynamically fetch the CSS variable and build the opacity array
     const updateCanvasColors = () => {
       const rootStyles = getComputedStyle(document.documentElement);
-      // Grab your primary color, fallback to brand purple if missing
       const primaryHex =
         rootStyles.getPropertyValue("--primary").trim() || "#8a2be2";
       const rgb = hexToRgb(primaryHex);
 
       const newStyles = [];
       for (let a = 0; a < 12; a++) {
-        newStyles.push(`rgba(${rgb}, ${(0.08 + (0.5 * a) / 11).toFixed(3)})`);
+        newStyles.push(`rgba(${rgb}, ${(0.05 + (0.35 * a) / 11).toFixed(3)})`);
       }
       styles = newStyles;
     };
@@ -96,12 +89,6 @@ export default function Home() {
     const handleMouseMove = (e) => {
       mx = e.clientX / window.innerWidth - 0.5;
       my = e.clientY / window.innerHeight - 0.5;
-
-      // Update Custom Cursor Glow
-      if (cursorRef.current && isHoverSupported) {
-        cursorRef.current.style.left = `${e.clientX}px`;
-        cursorRef.current.style.top = `${e.clientY}px`;
-      }
     };
 
     const handleVisibility = () => {
@@ -117,7 +104,6 @@ export default function Home() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       F = H * 0.87;
 
-      // Update colors on resize to catch theme toggles
       updateCanvasColors();
     };
 
@@ -125,7 +111,6 @@ export default function Home() {
     document.addEventListener("visibilitychange", handleVisibility);
     window.addEventListener("resize", resize);
 
-    // Initial setup
     updateCanvasColors();
     resize();
 
@@ -168,7 +153,7 @@ export default function Home() {
 
           if (sx < -8 || sx > W + 8 || sy < -8 || sy > H + 8) continue;
 
-          const r = Math.min(3.6, Math.max(0.6, 140 / depth));
+          const r = Math.min(3.2, Math.max(0.6, 130 / depth));
           const al = Math.max(0, Math.min(1, (195 - depth) / 135));
 
           ctx.fillStyle = styles[(al * 11) | 0];
@@ -179,70 +164,44 @@ export default function Home() {
 
     frame();
 
-    // Cleanup to prevent memory leaks in React
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("visibilitychange", handleVisibility);
       window.removeEventListener("resize", resize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [isHoverSupported]);
+  }, []);
 
   return (
     <>
-      {/* <Head>
-        <title>CloseDesk</title>
-        <meta name="description" content="Welcome to CloseDesk by Aicyro" />
-      </Head> */}
+      <Seo />
 
-      {/* =========================================
-          GLOBAL 3D BACKGROUND LAYER
-      ========================================= */}
-      <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none bg-[var(--hero-via)] transition-colors duration-500">
-        {/* Dynamic 3D CSS Gradient Mesh tied to global vars */}
+      {/* Global 3D Background Layer */}
+      <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none bg-[var(--background)] transition-colors duration-300">
+        {/* Subtle grid pattern */}
         <div
-          className="absolute inset-0 opacity-50 mix-blend-normal transition-colors duration-500"
+          className="absolute inset-0 opacity-[0.25]"
           style={{
             backgroundImage: `
-              radial-gradient(circle at 15% 50%, color-mix(in srgb, var(--primary) 15%, transparent), transparent 60%),
-              radial-gradient(circle at 85% 30%, color-mix(in srgb, var(--accent-blue) 15%, transparent), transparent 60%),
-              radial-gradient(circle at 50% 100%, color-mix(in srgb, var(--hero-to) 80%, transparent), transparent 100%),
-              radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--hero-from) 80%, transparent), transparent 100%)
+              linear-gradient(var(--grid-line) 1px, transparent 1px),
+              linear-gradient(90deg, var(--grid-line) 1px, transparent 1px)
             `,
+            backgroundSize: "56px 56px",
+            maskImage: "radial-gradient(1100px 640px at 50% 0%, black 0%, transparent 78%)",
+            WebkitMaskImage: "radial-gradient(1100px 640px at 50% 0%, black 0%, transparent 78%)",
           }}
-        ></div>
+        />
 
-        {/* The Animated Canvas Element */}
+        {/* Animated Particle Terrain Canvas */}
         <canvas
           ref={canvasRef}
-          className="absolute inset-0 w-full h-full opacity-80"
-        ></canvas>
-
-        {/* Animated Grid using global grid-line var */}
-        <div className="absolute inset-[-2px] bg-[linear-gradient(var(--grid-line)_1px,transparent_1px),linear-gradient(90deg,var(--grid-line)_1px,transparent_1px)] bg-[size:56px_56px] opacity-[0.25] [mask-image:radial-gradient(1100px_640px_at_50%_0%,#000_0%,transparent_78%)]"></div>
-
-        {/* Floating Orbs mapping to your global vars for volumetric depth */}
-        <div className="absolute rounded-full blur-[100px] opacity-50 animate-[drift_25s_ease-in-out_infinite_alternate] w-[500px] md:w-[600px] h-[500px] md:h-[600px] bg-[var(--primary)]/15 top-[-100px] md:top-[-150px] right-[-50px] md:right-[-100px]"></div>
-        <div className="absolute rounded-full blur-[120px] opacity-40 animate-[drift_20s_ease-in-out_infinite_alternate-reverse] w-[400px] md:w-[500px] h-[400px] md:h-[500px] bg-[var(--accent-blue)]/15 bottom-[-50px] md:bottom-[-100px] left-[-50px] md:left-[-100px]"></div>
-      </div>
-
-      {/* Custom Cursor Glow */}
-      {isHoverSupported && (
-        <div
-          ref={cursorRef}
-          className="fixed w-[340px] h-[340px] rounded-full pointer-events-none z-[1] transform -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(circle,var(--primary),transparent_65%)] opacity-10"
-          style={{ left: "-500px", top: "-500px" }}
           aria-hidden="true"
-        ></div>
-      )}
-      <Seo />
+          className="absolute inset-0 w-full h-full opacity-70"
+        />
+      </div>
 
       <main className="relative z-10">
         <Navbar onOpenPopup={() => setIsPopupOpen(true)} />
-        {/* <ThemeToggle /> */}
-        {/* <PopupModal /> */}
-
-        {/* Pass the open function as a prop to components that have buttons */}
         <Hero onOpenPopup={() => setIsPopupOpen(true)} />
         <NightScene />
         <TheTurn />
@@ -251,36 +210,14 @@ export default function Home() {
         <Compare />
         <NotFor />
         <Trust />
-        <Offer />
+        <Offer onOpenPopup={() => setIsPopupOpen(true)} />
         <Faq />
         <CTA />
-        {/* <Speed /> */}
-        {/* <Solution onOpenPopup={() => setIsPopupOpen(true)} /> */}
-        {/* <LivePreviewSection onOpenPopup={() => setIsPopupOpen(true)} /> */}
-        {/* <Process /> */}
-        {/* <Industries /> */}
-        {/* <Pulse /> */}
-        {/* <Founding /> */}
-        {/* <DoneForYou /> */}
-        {/* <TheDifference /> */}
-        {/* <FaqAndFooter /> */}
         <Footer />
 
-        {/* Place the popup at the bottom of the app */}
+        {/* Popup Modal */}
         <Popupform isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
       </main>
-
-      {/* Global Animation Keyframes for the Orbs */}
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-        @keyframes drift {
-          from { transform: translate(0, 0) scale(1); }
-          to { transform: translate(60px, -50px) scale(1.12); }
-        }
-      `,
-        }}
-      />
     </>
   );
 }

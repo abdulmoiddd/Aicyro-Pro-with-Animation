@@ -11,10 +11,9 @@ export default function Pricing() {
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
-        // Trigger reveal when 15% of the section is visible
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.disconnect(); // Only play animation once
+          observer.disconnect();
         }
       },
       { threshold: 0.15 },
@@ -31,28 +30,29 @@ export default function Pricing() {
     <section
       id="pricing"
       ref={sectionRef}
-      // 👇 Padding adjusted here (py-12 for mobile, sm:py-16 for desktop)
-      className="relative z-10 py-12 sm:py-16 bg-transparent transition-colors duration-300"
+      className="relative z-10 py-16 sm:py-24 bg-transparent transition-colors duration-200"
     >
-      <div className="max-w-[1180px] mx-auto px-6">
+      <div className="max-w-[var(--container)] mx-auto px-6">
         {/* Section Header */}
         <div
-          className={`text-center max-w-[680px] mx-auto mb-12 transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          className={`text-center max-w-[680px] mx-auto mb-14 transition-opacity transition-transform duration-500 ease-out ${
             isVisible
-              ? "opacity-100 translate-y-0 blur-none"
-              : "opacity-0 translate-y-12 blur-sm"
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-6"
           }`}
         >
-          <span className="font-mono text-xs tracking-widest uppercase text-[var(--primary)] flex items-center justify-center gap-2 mb-5">
-            <div className="w-7 h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] rounded-full" />
-            What it costs
-          </span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[var(--border-color)] bg-[var(--card-bg)] mb-5 shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)] animate-pulse" aria-hidden="true" />
+            <span className="text-xs font-medium text-[var(--foreground-muted)]">
+              What it costs
+            </span>
+          </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight text-[var(--foreground)]">
             Straight answers about pricing.
           </h2>
           <p className="text-lg text-[var(--foreground-muted)]">
             Most companies in this space make you book a call to hear a number.
-            Here's ours, up front.
+            Here&apos;s ours, up front.
           </p>
         </div>
 
@@ -60,7 +60,7 @@ export default function Pricing() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           <PricingCard
             isVisible={isVisible}
-            delay="delay-[150ms]"
+            delay="delay-[100ms]"
             kicker="The build"
             price="$2,000"
             unit="value"
@@ -69,7 +69,7 @@ export default function Pricing() {
 
           <PricingCard
             isVisible={isVisible}
-            delay="delay-[300ms]"
+            delay="delay-[200ms]"
             isFeatured={true}
             kicker="Founder rate"
             price="$250–350"
@@ -79,7 +79,7 @@ export default function Pricing() {
 
           <PricingCard
             isVisible={isVisible}
-            delay="delay-[450ms]"
+            delay="delay-[300ms]"
             kicker="Standard rate (after launch)"
             price="$400–500"
             unit="/mo"
@@ -89,20 +89,20 @@ export default function Pricing() {
 
         {/* Detailed Pricing Note */}
         <div
-          className={`max-w-[800px] mx-auto mt-12 bg-[var(--primary)]/5 border border-[var(--primary)]/20 rounded-[18px] p-8 lg:p-10 transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] delay-[600ms] ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          className={`max-w-[800px] mx-auto mt-12 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[18px] p-8 lg:p-10 transition-opacity transition-transform duration-500 ease-out delay-[400ms] shadow-sm ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
           <p className="text-[0.96rem] leading-relaxed text-[var(--foreground)]">
-            <strong className="font-bold text-[var(--primary)]">
+            <strong className="font-semibold text-[var(--primary)]">
               What moves the price within the range:
             </strong>{" "}
             the complexity of your qualification flow (a restoration company
             dispatching emergency crews needs more than an appliance repair
             shop), your lead volume, and how many notification routes your team
             needs. There are no per-lead fees, and no charge for the leads
-            CloseDesk captures. If the numbers don't make sense for your
-            business, we'll tell you on the call — a bad-fit client costs us
+            CloseDesk captures. If the numbers don&apos;t make sense for your
+            business, we&apos;ll tell you on the call — a bad-fit client costs us
             more than an honest no.
           </p>
         </div>
@@ -124,39 +124,34 @@ function PricingCard({
 }) {
   return (
     <div
-      className={`relative flex flex-col bg-[var(--card-bg)] border rounded-[22px] p-8 lg:p-10 transition-all duration-[700ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-translate-y-2.5 hover:scale-[1.01] group ${delay} ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
+      className={`relative flex flex-col bg-[var(--card-bg)] border rounded-[22px] p-8 lg:p-10 transition-opacity transition-transform duration-300 ease-out group ${delay} ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
       } ${
         isFeatured
-          ? "border-[var(--primary)] shadow-[0_12px_40px_var(--lead-glow)] z-10 ring-1 ring-[var(--primary)]/30"
-          : "border-[var(--border-color)] shadow-sm hover:border-[var(--primary)]/40 hover:shadow-[0_16px_36px_var(--grid-line)]"
+          ? "border-[var(--primary)] shadow-sm z-10"
+          : "border-[var(--border-color)] shadow-sm hover:border-[var(--primary)]/50"
       }`}
     >
-      {/* Featured Background Glow */}
-      {isFeatured && (
-        <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/5 via-transparent to-[var(--secondary)]/5 rounded-[22px] pointer-events-none" />
-      )}
-
       {/* Featured Badge */}
       {isFeatured && (
-        <span className="absolute -top-3.5 left-7 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-[#ffffff] font-mono text-[10px] tracking-widest uppercase px-3 py-1.5 rounded-lg font-bold shadow-md">
+        <span className="absolute -top-3.5 left-7 bg-[var(--primary)] text-[var(--color-accent-ink)] text-xs px-3 py-1 rounded-md font-semibold shadow-sm">
           Founding 25
         </span>
       )}
 
       {/* Card Content */}
-      <span className="font-mono text-xs tracking-widest uppercase text-[var(--foreground-muted)] mb-4 block group-hover:text-[var(--primary)] transition-colors">
+      <span className="text-xs text-[var(--foreground-muted)] font-medium mb-4 block">
         {kicker}
       </span>
 
-      <div className="font-black text-4xl lg:text-[2.6rem] tracking-tight text-[var(--foreground)] mb-6 transition-transform duration-300 group-hover:translate-x-1">
+      <div className="font-bold text-4xl lg:text-[2.6rem] tracking-tight text-[var(--foreground)] mb-6 tabular-nums">
         {price}
-        <span className="text-base font-semibold text-[var(--foreground-muted)] ml-1">
+        <span className="text-base font-normal text-[var(--foreground-muted)] ml-1">
           {unit}
         </span>
       </div>
 
-      <p className="text-[0.92rem] leading-relaxed text-[var(--foreground-muted)] flex-1">
+      <p className="text-sm leading-relaxed text-[var(--foreground-muted)] flex-1">
         {description}
       </p>
     </div>

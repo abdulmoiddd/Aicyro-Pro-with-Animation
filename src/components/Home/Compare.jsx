@@ -143,7 +143,6 @@ export default function Compare() {
   const sectionRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [activeTab, setActiveTab] = useState("human");
-  const [isAnimating, setIsAnimating] = useState(false);
 
   const activeData = comparisonData[activeTab];
 
@@ -163,7 +162,6 @@ export default function Compare() {
     return () => observer.disconnect();
   }, []);
 
-  // Handle Tab Switch
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
   };
@@ -172,60 +170,65 @@ export default function Compare() {
     <section
       id="compare"
       ref={sectionRef}
-      className="relative z-10 py-20 sm:py-28 bg-[var(--background)] transition-colors duration-300 overflow-hidden"
+      className="relative z-10 py-20 sm:py-28 bg-[var(--background)] transition-colors duration-200 overflow-hidden"
     >
-      <div className="max-w-[1180px] mx-auto px-6">
+      <div className="max-w-[var(--container)] mx-auto px-6">
         {/* Section Header */}
         <div
-          className={`text-center max-w-[720px] mx-auto mb-16 transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          className={`text-center max-w-[720px] mx-auto mb-16 transition-opacity transition-transform duration-500 ease-out ${
             isVisible
-              ? "opacity-100 translate-y-0 blur-none"
-              : "opacity-0 translate-y-12 blur-sm"
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-6"
           }`}
         >
-          <span className="font-mono text-xs tracking-widest uppercase text-[var(--primary)] flex items-center justify-center gap-2 mb-5">
-            <div className="w-7 h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] rounded-full" />
-            Compare your options
-          </span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[var(--border-color)] bg-[var(--card-bg)] mb-5 shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)] animate-pulse" aria-hidden="true" />
+            <span className="text-xs font-medium text-[var(--foreground-muted)]">
+              Compare your options
+            </span>
+          </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5 tracking-tight text-[var(--foreground)] leading-tight">
-            CloseDesk vs. everything else you're considering.
+            CloseDesk vs. everything else you&apos;re considering.
           </h2>
           <p className="text-lg text-[var(--foreground-muted)]">
-            You're comparing anyway. Here is the honest head-to-head reality of
+            You&apos;re comparing anyway. Here is the honest head-to-head reality of
             what happens when a lead lands on your site after hours.
           </p>
         </div>
 
         {/* Interactive Comparison Arena */}
         <div
-          className={`transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] delay-[200ms] ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+          className={`transition-opacity transition-transform duration-500 ease-out delay-[100ms] ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
           {/* Interactive Tabs */}
-          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-8 sm:mb-12">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-8 sm:mb-12" role="tablist" aria-label="Comparison options">
             {Object.values(comparisonData).map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
               return (
                 <button
                   key={tab.id}
+                  role="tab"
+                  aria-selected={isActive}
                   onClick={() => handleTabChange(tab.id)}
-                  className={`relative flex items-center gap-3 px-6 py-4 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-300 ease-out border ${
+                  className={`relative flex items-center gap-3 px-6 py-3.5 rounded-2xl font-semibold text-sm sm:text-base transition-colors duration-150 border cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] disabled:opacity-50 ${
                     isActive
-                      ? "bg-[var(--card-bg)] border-[var(--primary)] shadow-[0_10px_30px_var(--lead-glow)] text-[var(--primary)] scale-105 z-10"
-                      : "bg-transparent border-[var(--border-color)] text-[var(--foreground-muted)] hover:bg-[var(--card-bg)] hover:border-[var(--foreground-muted)]/50 hover:text-[var(--foreground)]"
+                      ? "bg-[var(--card-bg)] border-[var(--primary)] text-[var(--foreground)] shadow-sm"
+                      : "bg-transparent border-[var(--border-color)] text-[var(--foreground-muted)] hover:bg-[var(--card-bg)] hover:border-[var(--primary)]/50 hover:text-[var(--foreground)]"
                   }`}
                 >
                   <Icon
-                    size={20}
+                    size={18}
                     className={
-                      isActive ? "text-[var(--primary)]" : "opacity-70"
+                      isActive ? "text-[var(--primary)]" : "text-[var(--foreground-muted)]"
                     }
+                    aria-hidden="true"
                   />
                   {tab.title}
                   {isActive && (
-                    <div className="absolute -bottom-[1px] left-1/2 -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] rounded-t-full" />
+                    <div className="absolute -bottom-[1px] left-1/2 -translate-x-1/2 w-10 h-[2px] bg-[var(--primary)] rounded-t-full" aria-hidden="true" />
                   )}
                 </button>
               );
@@ -237,20 +240,20 @@ export default function Compare() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
               >
                 {/* Storytelling Outcome Header */}
                 <div className="grid grid-cols-1 lg:grid-cols-2">
                   {/* CloseDesk Story */}
-                  <div className="p-8 lg:p-10 bg-gradient-to-br from-[var(--primary)]/10 to-transparent border-b lg:border-b-0 lg:border-r border-[var(--grid-line)] relative">
-                    <span className="inline-flex items-center gap-2 font-mono text-[10px] tracking-widest uppercase bg-[var(--primary)]/10 text-[var(--primary)] px-3 py-1.5 rounded-lg font-bold mb-4">
-                      <Zap size={14} /> The CloseDesk Outcome
+                  <div className="p-8 lg:p-10 bg-[var(--primary)]/5 border-b lg:border-b-0 lg:border-r border-[var(--border-color)] relative">
+                    <span className="inline-flex items-center gap-2 text-xs bg-[var(--primary)]/15 text-[var(--primary)] border border-[var(--primary)]/30 px-3 py-1 rounded-lg font-semibold mb-4">
+                      <Zap size={14} aria-hidden="true" /> The CloseDesk Outcome
                     </span>
                     <p className="text-[1.05rem] font-medium text-[var(--foreground)] leading-relaxed">
-                      <span className="font-mono text-xs text-[var(--foreground-muted)] bg-[var(--background)] px-2 py-1 rounded mr-2 border border-[var(--border-color)]">
+                      <span className="text-xs text-[var(--foreground-muted)] bg-[var(--card-bg)] px-2 py-1 rounded mr-2 border border-[var(--border-color)] tabular-nums">
                         11:42 PM
                       </span>
                       {activeData.storyCloseDesk}
@@ -258,12 +261,12 @@ export default function Compare() {
                   </div>
 
                   {/* Rival Story */}
-                  <div className="p-8 lg:p-10 bg-[var(--background)] border-b lg:border-b-0 border-[var(--grid-line)] relative">
-                    <span className="inline-flex items-center gap-2 font-mono text-[10px] tracking-widest uppercase bg-[var(--border-color)] text-[var(--foreground-muted)] px-3 py-1.5 rounded-lg font-bold mb-4">
-                      <Clock size={14} /> With {activeData.title}
+                  <div className="p-8 lg:p-10 bg-[var(--card-bg)] border-b lg:border-b-0 border-[var(--border-color)] relative">
+                    <span className="inline-flex items-center gap-2 text-xs bg-[var(--background)] text-[var(--foreground-muted)] border border-[var(--border-color)] px-3 py-1 rounded-lg font-semibold mb-4">
+                      <Clock size={14} aria-hidden="true" /> With {activeData.title}
                     </span>
-                    <p className="text-[1.05rem] text-[var(--foreground-muted)] leading-relaxed">
-                      <span className="font-mono text-xs text-[var(--grid-line)] bg-transparent border border-[var(--border-color)] px-2 py-1 rounded mr-2 opacity-70">
+                    <p className="text-[1.05rem] text-[var(--foreground-muted)] leading-relaxed font-normal">
+                      <span className="text-xs text-[var(--foreground-muted)] bg-[var(--background)] border border-[var(--border-color)] px-2 py-1 rounded mr-2 tabular-nums">
                         11:42 PM
                       </span>
                       {activeData.storyRival}
@@ -273,7 +276,7 @@ export default function Compare() {
 
                 {/* Hard Metrics List */}
                 <div className="flex flex-col bg-[var(--card-bg)]">
-                  <div className="hidden lg:grid grid-cols-12 bg-gradient-to-b from-[var(--card-gradient-start)] to-[var(--card-gradient-end)] border-y border-[var(--grid-line)] px-10 py-4 text-xs font-mono tracking-widest uppercase text-[var(--foreground-muted)] font-bold">
+                  <div className="hidden lg:grid grid-cols-12 bg-[var(--background)] border-y border-[var(--border-color)] px-10 py-3.5 text-xs text-[var(--foreground-muted)] font-semibold">
                     <div className="col-span-3">Feature Metric</div>
                     <div className="col-span-4 text-[var(--primary)]">
                       CloseDesk
@@ -286,9 +289,11 @@ export default function Compare() {
                     return (
                       <div
                         key={idx}
-                        className={`grid grid-cols-1 lg:grid-cols-12 px-6 lg:px-10 py-6 gap-4 lg:gap-0 items-start hover:bg-[var(--foreground)]/[0.02] transition-colors ${isLast ? "" : "border-b border-[var(--grid-line)]"}`}
+                        className={`grid grid-cols-1 lg:grid-cols-12 px-6 lg:px-10 py-5 gap-4 lg:gap-0 items-start hover:bg-[var(--background)]/60 transition-colors duration-150 ${
+                          isLast ? "" : "border-b border-[var(--border-color)]"
+                        }`}
                       >
-                        {/* Metric Label (Mobile shows it distinctly) */}
+                        {/* Metric Label */}
                         <div className="col-span-3 font-semibold text-[0.95rem] text-[var(--foreground)] flex items-center lg:items-start pt-1">
                           {metric.label}
                         </div>
@@ -296,8 +301,9 @@ export default function Compare() {
                         {/* CloseDesk Value */}
                         <div className="col-span-4 flex items-start gap-3">
                           <CheckCircle2
-                            size={20}
+                            size={18}
                             className="text-[var(--primary)] shrink-0 mt-0.5"
+                            aria-hidden="true"
                           />
                           <span className="text-[0.95rem] font-medium text-[var(--foreground)]">
                             {metric.us}
@@ -308,13 +314,15 @@ export default function Compare() {
                         <div className="col-span-5 flex items-start gap-3 lg:pl-8">
                           {metric.win === "tie" ? (
                             <AlertCircle
-                              size={20}
-                              className="text-[var(--accent-blue)] shrink-0 mt-0.5 opacity-80"
+                              size={18}
+                              className="text-[var(--foreground-muted)] shrink-0 mt-0.5 opacity-80"
+                              aria-hidden="true"
                             />
                           ) : (
                             <XCircle
-                              size={20}
+                              size={18}
                               className="text-[var(--foreground-muted)] shrink-0 mt-0.5 opacity-60"
+                              aria-hidden="true"
                             />
                           )}
                           <span className="text-[0.95rem] text-[var(--foreground-muted)]">
@@ -332,33 +340,24 @@ export default function Compare() {
 
         {/* Footer Caveat */}
         <div
-          className={`max-w-[800px] mx-auto mt-12 bg-transparent border border-[var(--border-color)] rounded-[16px] p-6 lg:p-8 text-center text-[0.96rem] text-[var(--foreground-muted)] transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] delay-[400ms] ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          className={`max-w-[800px] mx-auto mt-12 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[16px] p-6 lg:p-8 text-center text-[0.96rem] text-[var(--foreground-muted)] transition-opacity transition-transform duration-500 ease-out delay-[200ms] shadow-sm ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
           <AlertCircle
-            size={24}
+            size={22}
             className="mx-auto mb-3 text-[var(--primary)] opacity-80"
+            aria-hidden="true"
           />
-          <strong className="text-[var(--foreground)] font-bold block mb-1">
+          <strong className="text-[var(--foreground)] font-semibold block mb-1">
             The honest caveat:
           </strong>
           If most of your leads phone you directly and your website gets little
           traffic, a human answering service may serve you better than we can —
-          and we'll tell you exactly that on an audit call. CloseDesk earns its
+          and we&apos;ll tell you exactly that on an audit call. CloseDesk earns its
           keep where the leads land: on your website, usually after hours.
         </div>
       </div>
-
-      {/* Embedded Styles */}
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-      `,
-        }}
-      />
     </section>
   );
 }

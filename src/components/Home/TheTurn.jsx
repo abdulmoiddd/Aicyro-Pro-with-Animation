@@ -7,8 +7,8 @@ export default function TheTurn() {
   const sectionRef = useRef(null);
 
   // Animation timeline states
-  const [step, setStep] = useState(-1); // -1: hidden, 0: 9:47PM, 1: 11:26PM, 2: 1:03AM, 3: Morning
-  const [processing, setProcessing] = useState(false); // True when actively "ringing/typing"
+  const [step, setStep] = useState(-1);
+  const [processing, setProcessing] = useState(false);
   const [currentTime, setCurrentTime] = useState("9:47 PM");
 
   // Story Sequence
@@ -103,27 +103,27 @@ export default function TheTurn() {
   return (
     <section
       ref={sectionRef}
-      className="relative z-10 py-24 transition-colors duration-1000 ease-in-out bg-gradient-to-b from-[var(--background)] to-[var(--hero-via)]"
+      className="relative z-10 py-24 transition-colors duration-200 bg-[var(--background)]"
       id="turn"
     >
-      <div className="max-w-[1180px] mx-auto px-6">
+      <div className="max-w-[var(--container)] mx-auto px-6">
         {/* Story Header & Clock */}
-        <div className="text-center max-w-[680px] mx-auto mb-14 transition-all duration-700">
-          <div className="inline-flex items-center justify-center gap-2.5 px-4 py-2 rounded-full border transition-all duration-700 bg-[var(--primary)]/10 border-[var(--primary)]/20 text-[var(--primary)] mb-6 font-mono text-xs md:text-sm tracking-widest font-semibold shadow-sm">
+        <div className="text-center max-w-[680px] mx-auto mb-14">
+          <div className="inline-flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-full border bg-[var(--card-bg)] border-[var(--border-color)] text-[var(--foreground)] mb-6 text-xs font-medium shadow-sm">
             {isMorning ? (
-              <Sunrise size={16} className="animate-[spin_16s_linear_infinite]" />
+              <Sunrise size={14} className="text-[var(--primary)]" aria-hidden="true" />
             ) : (
-              <Moon size={16} className="animate-[pulse_3s_ease-in-out_infinite]" />
+              <Moon size={14} className="text-[var(--primary)]" aria-hidden="true" />
             )}
-            <span className="min-w-[70px] text-left">{currentTime}</span>
+            <span className="min-w-[65px] text-left tabular-nums">{currentTime}</span>
           </div>
 
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight transition-colors duration-700 text-[var(--foreground)]">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight transition-colors duration-200 text-[var(--foreground)]">
             {isMorning
               ? "7:02 AM looks completely different."
-              : "While your competitors are sleeping..."}
+              : "While your competitors are sleeping…"}
           </h2>
-          <p className="text-lg transition-colors duration-700 text-[var(--foreground-muted)]">
+          <p className="text-lg transition-colors duration-200 text-[var(--foreground-muted)]">
             Same website. Same three visitors. One difference: someone answered
             in under a second — every time.
           </p>
@@ -132,8 +132,8 @@ export default function TheTurn() {
         {/* Side-by-Side Comparison Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
           {/* Left Card: Without CloseDesk (Losing) */}
-          <div className="transition-all duration-700 hover:-translate-y-1 rounded-[20px] p-8 lg:p-10 relative overflow-hidden border bg-[var(--card-bg)] border-[var(--border-color)] shadow-sm">
-            <span className="font-mono text-xs tracking-widest uppercase mb-6 inline-block px-3 py-1.5 rounded-lg transition-colors duration-700 bg-[var(--grid-line)] text-[var(--foreground-muted)]">
+          <div className="motion-safe:transition-transform duration-200 motion-safe:hover:-translate-y-0.5 rounded-[20px] p-8 lg:p-10 relative overflow-hidden border bg-[var(--card-bg)] border-[var(--border-color)] shadow-sm">
+            <span className="text-xs font-semibold mb-6 inline-block px-3 py-1.5 rounded-lg bg-[var(--background)] text-[var(--foreground-muted)] border border-[var(--border-color)]">
               Without CloseDesk
             </span>
 
@@ -152,14 +152,14 @@ export default function TheTurn() {
 
             {/* Morning Summary Reveal */}
             <div
-              className={`mt-7 transition-all duration-1000 delay-300 ${
+              className={`mt-7 transition-opacity transition-transform duration-300 delay-200 ${
                 isMorning
                   ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-4 pointer-events-none"
+                  : "opacity-0 translate-y-2 pointer-events-none"
               }`}
             >
-              <p className="font-medium text-[0.95rem] flex gap-3 items-start text-[var(--foreground-muted)]">
-                <AlertCircle size={20} className="shrink-0 mt-0.5 opacity-70" />
+              <p className="font-normal text-[0.95rem] flex gap-3 items-start text-[var(--foreground-muted)]">
+                <AlertCircle size={20} className="shrink-0 mt-0.5 text-[var(--logo-politico-red)]" aria-hidden="true" />
                 Three urgent jobs came in overnight. All three hired whoever
                 answered first.
               </p>
@@ -167,8 +167,8 @@ export default function TheTurn() {
           </div>
 
           {/* Right Card: With CloseDesk (Winning) */}
-          <div className="transition-all duration-700 hover:-translate-y-1 hover:shadow-[0_16px_50px_var(--lead-glow)] rounded-[20px] p-8 lg:p-10 relative overflow-hidden border bg-[var(--card-bg)] border-[var(--primary)] shadow-[0_12px_40px_var(--lead-glow)]">
-            <span className="font-mono text-xs tracking-widest uppercase mb-6 inline-block px-3 py-1.5 rounded-lg font-bold transition-colors duration-700 bg-[var(--lead-glow)] text-[var(--primary)]">
+          <div className="motion-safe:transition-transform duration-200 motion-safe:hover:-translate-y-0.5 rounded-[20px] p-8 lg:p-10 relative overflow-hidden border bg-[var(--card-bg)] border-[var(--primary)] shadow-sm">
+            <span className="text-xs mb-6 inline-block px-3 py-1.5 rounded-lg font-semibold bg-[var(--primary)]/15 border border-[var(--primary)]/30 text-[var(--primary)]">
               With CloseDesk
             </span>
 
@@ -187,16 +187,17 @@ export default function TheTurn() {
 
             {/* Morning Summary Reveal */}
             <div
-              className={`mt-7 transition-all duration-1000 delay-500 ${
+              className={`mt-7 transition-opacity transition-transform duration-300 delay-300 ${
                 isMorning
                   ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-4 pointer-events-none"
+                  : "opacity-0 translate-y-2 pointer-events-none"
               }`}
             >
-              <p className="font-semibold text-[0.95rem] flex gap-3 items-start text-[var(--foreground)]">
+              <p className="font-medium text-[0.95rem] flex gap-3 items-start text-[var(--foreground)]">
                 <CheckCircle2
-                  size={22}
+                  size={20}
                   className="text-[var(--primary)] shrink-0 mt-0.5"
+                  aria-hidden="true"
                 />
                 Each one answered instantly, qualified like a dispatcher,
                 booked, team notified, and logged in Pulse — before you woke up.
@@ -216,22 +217,22 @@ function StoryRow({ title, time, type, isVisible, isProcessing }) {
 
   return (
     <div
-      className={`flex items-center justify-between p-3.5 border rounded-xl text-sm transition-all duration-500 overflow-hidden ${
+      className={`flex items-center justify-between p-3.5 border rounded-xl text-sm transition-opacity transition-transform duration-300 overflow-hidden ${
         isVisible
           ? "opacity-100 translate-y-0 max-h-20"
-          : "opacity-0 translate-y-4 max-h-0 py-0 border-transparent"
+          : "opacity-0 translate-y-2 max-h-0 py-0 border-transparent"
       } ${
         isLoss
-          ? "border-[var(--grid-line)] bg-transparent grayscale opacity-80"
-          : "border-[var(--primary)]/20 bg-[var(--primary)]/5"
+          ? "border-[var(--border-color)] bg-[var(--background)] opacity-70"
+          : "border-[var(--primary)]/30 bg-[var(--primary)]/5"
       }`}
     >
       {/* Lead Info */}
       <div className="flex flex-col gap-0.5 truncate pr-2">
-        <span className="font-medium truncate transition-colors text-[var(--foreground)]">
+        <span className="font-medium truncate text-[var(--foreground)]">
           {title}
         </span>
-        <span className="text-xs font-mono transition-colors text-[var(--foreground-muted)]">
+        <span className="text-xs text-[var(--foreground-muted)] tabular-nums">
           {time}
         </span>
       </div>
@@ -241,22 +242,22 @@ function StoryRow({ title, time, type, isVisible, isProcessing }) {
         {isProcessing ? (
           /* Processing State */
           <div
-            className={`flex items-center gap-1.5 font-mono text-[10px] tracking-wider px-2.5 py-1 rounded-md border ${
+            className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-md border ${
               isLoss
                 ? "border-[var(--border-color)] text-[var(--foreground-muted)]"
-                : "border-[var(--primary)]/40 text-[var(--primary)] bg-[var(--primary)]/10"
+                : "border-[var(--primary)]/30 text-[var(--primary)] bg-[var(--primary)]/10"
             }`}
           >
             {isLoss ? (
               <>
-                <Clock size={12} className="animate-pulse" /> Ringing...
+                <Clock size={12} className="animate-pulse" aria-hidden="true" /> Ringing…
               </>
             ) : (
               <>
-                <div className="flex gap-0.5">
-                  <span className="w-1 h-1 bg-[var(--primary)] rounded-full animate-bounce" />
-                  <span className="w-1 h-1 bg-[var(--primary)] rounded-full animate-bounce delay-75" />
-                  <span className="w-1 h-1 bg-[var(--primary)] rounded-full animate-bounce delay-150" />
+                <div className="flex gap-0.5" aria-hidden="true">
+                  <span className="w-1 h-1 bg-[var(--primary)] rounded-full animate-pulse" />
+                  <span className="w-1 h-1 bg-[var(--primary)] rounded-full animate-pulse delay-75" />
+                  <span className="w-1 h-1 bg-[var(--primary)] rounded-full animate-pulse delay-150" />
                 </div>
                 AI Typing
               </>
@@ -265,10 +266,10 @@ function StoryRow({ title, time, type, isVisible, isProcessing }) {
         ) : (
           /* Resolved State */
           <span
-            className={`font-mono text-[10px] tracking-wider px-2.5 py-1 rounded-md font-bold shadow-sm transition-all duration-500 animate-in zoom-in ${
+            className={`text-xs px-2.5 py-0.5 rounded-md font-semibold shadow-sm transition-opacity duration-200 ${
               isLoss
-                ? "text-[var(--logo-politico-red)] border border-[var(--logo-politico-red)]"
-                : "bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-[#ffffff]"
+                ? "text-[var(--logo-politico-red)] border border-[var(--logo-politico-red)]/40 bg-[var(--logo-politico-red)]/10"
+                : "bg-[var(--primary)] text-[var(--color-accent-ink)]"
             }`}
           >
             {isLoss ? "GONE" : "BOOKED"}

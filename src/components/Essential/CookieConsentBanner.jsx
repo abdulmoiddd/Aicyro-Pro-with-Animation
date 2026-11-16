@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Lock } from "lucide-react";
 import { ref, set } from "firebase/database";
 import { db } from "../../lib/firebase";
 import {
@@ -98,58 +99,80 @@ const getUserLocation = (txLogger = baseLogger) => {
       (error) => {
         txLogger.debug("user_action", "geolocation_denied", {
           error,
-          context: { error_message: error.message },
+          code: error.code,
         });
         resolve({
-          status: "rejected",
-          error: error.message,
+          status: "denied",
+          code: error.code,
           lat: null,
           lng: null,
         });
       },
-      { timeout: 8000 },
+      { timeout: 8000, enableHighAccuracy: true },
     );
   });
 };
 
 /**
- * Helper: Silent tracker that runs regardless of whether the banner is open or closed
+ * Main Worker: Captures all user footprint details and logs it to Firebase.
  */
 const executeSilentTracking = async (consentStatus) => {
-  const txId = generateCorrelationId();
-  const txLogger = baseLogger.child({ correlation: { correlation_id: txId } });
-  
-  const anonId = getOrCreateAnonId();
-  const deviceName = getReadableDeviceName();
-  const storedAppUser = typeof window !== "undefined" ? localStorage.getItem("aicyro_username") : null;
-  const username = storedAppUser || `Visitor_${anonId ? anonId.substring(0, 8) : "Guest"}`;
-
-  const [locationData, ipData] = await Promise.all([
-    getUserLocation(txLogger),
-    getIpAndLocation(txLogger),
-  ]);
-
-  const payload = {
-    username,
-    deviceName,
-    anonId: anonId || "unknown",
-    consentStatus: consentStatus,
-    ipAddress: ipData.ip,
-    ipLocation: ipData,
-    language: typeof window !== "undefined" ? navigator.language : "unknown",
-    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
-    updatedAt: new Date().toISOString(),
-    rawUserAgent: typeof window !== "undefined" ? navigator.userAgent : "unknown",
-    location: locationData,
-  };
+  const transactionId = generateCorrelationId();
+  const txLogger = createWebsiteLogger("CookieConsentBanner", {
+    correlation_id: transactionId,
+  });
 
   try {
-    if (db && anonId) {
-      const userCookieRef = ref(db, `user_cookies/${anonId}`);
-      await set(userCookieRef, payload);
-    }
+    const anonId = getOrCreateAnonId();
+    const readableDevice = getReadableDeviceName();
+
+    const [ipInfo, locationResult] = await Promise.all([
+      getIpAndLocation(txLogger),
+      getUserLocation(txLogger),
+    ]);
+
+    const activeLat =
+      locationResult.lat !== null ? locationResult.lat : ipInfo.lat;
+    const activeLng =
+      locationResult.lng !== null ? locationResult.lng : ipInfo.lng;
+
+    const payload = {
+      user_id: anonId,
+      consent_status: consentStatus,
+      timestamp: Date.now(),
+      readable_device: readableDevice,
+      network: {
+        ip: ipInfo.ip,
+        city: ipInfo.city,
+        region: ipInfo.region,
+        country: ipInfo.country,
+      },
+      browser_location: {
+        status: locationResult.status,
+        latitude: activeLat,
+        longitude: activeLng,
+      },
+      environment: {
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+        screenWidth: window.screen.width,
+        screenHeight: window.screen.height,
+        referrer: document.referrer || "direct",
+      },
+    };
+
+    const targetRef = ref(db, `user_sessions/${anonId}`);
+    await set(targetRef, payload);
+
+    txLogger.info("user_action", "consent_logged_successfully", {
+      correlation: { correlation_id: transactionId },
+      context: { consent: consentStatus, user_id: anonId },
+    });
   } catch (error) {
-    txLogger.error("database", "tracking_save_failed", { error });
+    txLogger.error("database_mutation", "consent_save_failed", {
+      correlation: { correlation_id: transactionId },
+      error,
+    });
   }
 };
 
@@ -158,13 +181,6 @@ export default function CookieConsentBanner() {
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    // 🛑 Do not ask for cookies or run tracking on the /lg page
-    if (window.location.pathname === "/lg" || window.location.pathname.startsWith("/lg/")) {
-      return;
-    }
-
     const existingConsent = getStrictCookie(CONSENT_COOKIE_NAME);
 
     // ONLY hide the banner if the user previously explicitly "accepted"
@@ -193,7 +209,7 @@ export default function CookieConsentBanner() {
 
   const handleDecision = async (status) => {
     setIsSaving(true);
-    
+
     // Only save the permanent cookie to the browser if they ACCEPT
     if (status === "accepted") {
       setStrictCookie(CONSENT_COOKIE_NAME, { status, timestamp: Date.now() });
@@ -218,28 +234,29 @@ export default function CookieConsentBanner() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[9998] bg-black/60 backdrop-blur-sm select-none"
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[9998] bg-[var(--background)]/80 backdrop-blur-sm select-none"
+            aria-hidden="true"
           />
 
           {/* Banner */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            exit={{ opacity: 0, scale: 0.95, y: 16 }}
             transition={{ type: "spring", damping: 25, stiffness: 350 }}
-            className="fixed top-4 left-4 right-4 md:right-auto md:w-[350px] z-[9999] bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl p-5"
+            className="fixed top-4 left-4 right-4 md:right-auto md:w-[360px] z-[9999] bg-[var(--card-bg)] border border-[var(--border-color)] rounded-2xl shadow-md p-5"
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="flex w-9 h-9 bg-primary/10 text-primary items-center justify-center rounded-full text-base shrink-0 animate-pulse">
-                🔒
+              <div className="flex w-9 h-9 bg-[var(--primary)]/15 text-[var(--primary)] items-center justify-center rounded-full shrink-0">
+                <Lock size={16} aria-hidden="true" />
               </div>
-              <h2 className="text-base font-bold text-gray-900 dark:text-white leading-none">
-                Cookie & Location Policy
+              <h2 className="text-base font-bold text-[var(--foreground)] leading-none">
+                Cookie &amp; Location Policy
               </h2>
             </div>
 
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-5 leading-relaxed">
+            <p className="text-sm text-[var(--foreground-muted)] mb-5 leading-relaxed">
               We use essential browser cookies and log basic device metrics
               (including an optional location request) to secure our platform.
               Please accept or reject to unlock the website.
@@ -249,7 +266,7 @@ export default function CookieConsentBanner() {
               <button
                 onClick={() => handleDecision("accepted")}
                 disabled={isSaving}
-                className="w-full py-2.5 px-4 rounded-xl font-bold text-sm text-white bg-primary hover:bg-primary/90 shadow hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
+                className="w-full py-2.5 px-4 rounded-xl font-bold text-sm text-[var(--color-accent-ink)] bg-[var(--primary)] hover:bg-[var(--secondary)] motion-safe:transition-transform duration-150 motion-safe:hover:scale-[1.01] motion-safe:active:scale-[0.99] disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] cursor-pointer"
               >
                 {isSaving ? "Awaiting Permissions..." : "Accept All Cookies"}
               </button>
@@ -257,7 +274,7 @@ export default function CookieConsentBanner() {
               <button
                 onClick={() => handleDecision("rejected")}
                 disabled={isSaving}
-                className="w-full py-2.5 px-4 rounded-xl font-semibold text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-800 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
+                className="w-full py-2.5 px-4 rounded-xl font-semibold text-sm text-[var(--foreground-muted)] hover:text-[var(--foreground)] bg-[var(--card-bg)] hover:bg-[var(--background)] border border-[var(--border-color)] motion-safe:transition-transform duration-150 motion-safe:hover:scale-[1.01] motion-safe:active:scale-[0.99] disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] cursor-pointer"
               >
                 {isSaving ? "Awaiting Permissions..." : "Reject Non-Essential"}
               </button>

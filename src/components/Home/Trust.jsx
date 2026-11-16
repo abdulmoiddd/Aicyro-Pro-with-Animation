@@ -6,7 +6,7 @@ import React, { useEffect, useState, useRef } from "react";
 
 function LiveShieldIcon() {
   return (
-    <div className="relative w-7 h-7 flex items-center justify-center">
+    <div className="relative w-7 h-7 flex items-center justify-center" aria-hidden="true">
       {/* Radiating security perimeter pulse */}
       <span className="absolute inset-[-4px] rounded-full border border-[var(--primary)]/30 animate-[ping_3.2s_cubic-bezier(0,0,0.2,1)_infinite] pointer-events-none" />
 
@@ -19,7 +19,7 @@ function LiveShieldIcon() {
         strokeLinejoin="round"
         className="w-full h-full text-[var(--primary)]"
       >
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" className="transition-all" />
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
         <path
           d="m9 12 2 2 4-4"
           className="stroke-[var(--primary)] animate-[pulse_2.5s_ease-in-out_infinite]"
@@ -32,7 +32,7 @@ function LiveShieldIcon() {
 
 function LiveScanDocumentIcon() {
   return (
-    <div className="relative w-7 h-7 flex items-center justify-center overflow-hidden">
+    <div className="relative w-7 h-7 flex items-center justify-center overflow-hidden" aria-hidden="true">
       <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -56,7 +56,7 @@ function LiveScanDocumentIcon() {
 
 function LivePulseActivityIcon() {
   return (
-    <div className="relative w-7 h-7 flex items-center justify-center">
+    <div className="relative w-7 h-7 flex items-center justify-center" aria-hidden="true">
       <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -114,21 +114,21 @@ export default function Trust() {
       description:
         "Every lead, conversation, and booking belongs to your business. It's in the agreement, not just on this page.",
       icon: LiveShieldIcon,
-      delay: "delay-[150ms]",
+      delay: "delay-[100ms]",
     },
     {
       title: "A documented process",
       description:
         "Every step of the build follows a written process, and every call happens in your business hours.",
       icon: LiveScanDocumentIcon,
-      delay: "delay-[300ms]",
+      delay: "delay-[180ms]",
     },
     {
       title: "Results visible in Pulse",
       description:
         "Leads, bookings, and outcomes live in your Pulse dashboard — you see exactly what CloseDesk is producing.",
       icon: LivePulseActivityIcon,
-      delay: "delay-[450ms]",
+      delay: "delay-[260ms]",
     },
   ];
 
@@ -136,21 +136,21 @@ export default function Trust() {
     <section
       id="trust"
       ref={sectionRef}
-      className="relative z-10 py-12 sm:py-16 bg-transparent transition-colors duration-300 overflow-hidden"
+      className="relative z-10 py-16 sm:py-24 bg-transparent transition-colors duration-300"
     >
       <div className="max-w-[1180px] mx-auto px-6">
         {/* Section Header */}
         <div
-          className={`text-center max-w-[680px] mx-auto mb-16 transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          className={`text-center max-w-[680px] mx-auto mb-16 transition-[opacity,transform] duration-700 ease-out ${
             isVisible
-              ? "opacity-100 translate-y-0 blur-none"
-              : "opacity-0 translate-y-12 blur-sm"
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-8"
           }`}
         >
-          <span className="font-mono text-xs tracking-widest uppercase text-[var(--primary)] flex items-center justify-center gap-2 mb-5">
-            <div className="w-7 h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] rounded-full" />
-            Why owners trust us
-          </span>
+          <div className="inline-flex items-center justify-center gap-2 px-3 py-1 rounded-full border border-[var(--border-color)] bg-[var(--card-bg)] text-xs font-semibold text-[var(--primary)] mb-5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)]" aria-hidden="true" />
+            <span>Why owners trust us</span>
+          </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--foreground)]">
             No black box. No lock-in. No guesswork.
           </h2>
@@ -163,25 +163,25 @@ export default function Trust() {
             return (
               <div
                 key={index}
-                className={`group relative bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[22px] p-8 lg:p-10 transition-all duration-[700ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-translate-y-2.5 hover:border-[var(--primary)]/40 hover:shadow-[0_16px_40px_var(--lead-glow)] overflow-hidden ${item.delay} ${
+                className={`group relative bg-[var(--card-bg)] border border-[var(--border-color)] rounded-2xl p-8 lg:p-10 transition-[transform,border-color,box-shadow,opacity] duration-300 ease-out hover:-translate-y-1 hover:border-[var(--primary)]/40 hover:shadow-lg overflow-hidden ${item.delay} ${
                   isVisible
                     ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-16"
+                    : "opacity-0 translate-y-8"
                 }`}
               >
-                {/* Animated Top Border (Expands on Hover) */}
-                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[var(--primary)] via-[var(--secondary)] to-[var(--accent-blue)] transform scale-x-0 origin-left transition-transform duration-500 ease-out group-hover:scale-x-100 z-10" />
+                {/* Accent Top Line (Expands on Hover) */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-[var(--primary)] transform scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100 z-10" />
 
                 {/* Icon Container with live motion */}
-                <div className="mb-6 inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[var(--primary)]/10 border border-[var(--primary)]/20 text-[var(--primary)] transition-all duration-300 group-hover:scale-110 group-hover:bg-[var(--primary)]/15 group-hover:shadow-[0_0_20px_var(--lead-glow)]">
+                <div className="mb-6 inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[var(--primary)]/10 border border-[var(--primary)]/20 text-[var(--primary)] transition-[transform,background-color] duration-200 group-hover:scale-105 group-hover:bg-[var(--primary)]/15">
                   <Icon />
                 </div>
 
                 {/* Content */}
-                <h3 className="text-xl font-bold text-[var(--foreground)] mb-3 tracking-tight transition-colors duration-300">
+                <h3 className="text-xl font-bold text-[var(--foreground)] mb-3 tracking-tight transition-colors duration-200">
                   {item.title}
                 </h3>
-                <p className="text-[0.94rem] leading-relaxed text-[var(--foreground-muted)]">
+                <p className="text-sm leading-relaxed text-[var(--foreground-muted)]">
                   {item.description}
                 </p>
               </div>

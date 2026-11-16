@@ -14,7 +14,7 @@ const navLinks = [
 
 export default function Navbar({ onOpenPopup }) {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0); // Holds a value from 0 to 1
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLight, setIsLight] = useState(true);
   const [activeSection, setActiveSection] = useState("");
@@ -27,7 +27,6 @@ export default function Navbar({ onOpenPopup }) {
       const scrollY = window.scrollY;
       setIsScrolled(scrollY > 20);
 
-      // Calculate scroll progress (0 to 1)
       const docHeight =
         document.documentElement.scrollHeight -
         document.documentElement.clientHeight;
@@ -39,7 +38,6 @@ export default function Navbar({ onOpenPopup }) {
     };
 
     const handleScroll = () => {
-      // Use requestAnimationFrame for buttery smooth 60fps/120fps updates
       if (!ticking) {
         window.requestAnimationFrame(updateScroll);
         ticking = true;
@@ -47,7 +45,7 @@ export default function Navbar({ onOpenPopup }) {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    updateScroll(); // Trigger once on mount
+    updateScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -119,26 +117,28 @@ export default function Navbar({ onOpenPopup }) {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-[100] transition-colors duration-200 ${
         isScrolled
-          ? "bg-[var(--background)]/85 backdrop-blur-2xl border-b border-[var(--border-color)] shadow-[0_4px_24px_rgba(0,0,0,0.06)] py-3"
+          ? "bg-[var(--background)]/90 backdrop-blur-md border-b border-[var(--border-color)] py-3 shadow-sm"
           : "bg-transparent border-b border-transparent py-5"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-6 relative">
+      <div className="max-w-[var(--container)] mx-auto px-4 sm:px-6 flex items-center justify-between gap-6 relative">
         {/* ================= BRAND LOGO ================= */}
         <Link
           href="/#top"
           onClick={(e) => handleNavClick(e, "/#top")}
-          className="flex items-center gap-3 shrink-0 group select-none"
+          className="flex items-center gap-3 shrink-0 group select-none rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+          aria-label="CloseDesk Home"
         >
-          <div className="w-10 h-10 transition-transform duration-300 group-hover:scale-105 group-hover:rotate-[-3deg]">
+          <div className="w-10 h-10 motion-safe:transition-transform duration-200 motion-safe:group-hover:scale-105">
             <svg
               id="Layer_1"
               data-name="Layer 1"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 100 100"
-              className="w-full h-full drop-shadow-[0_2px_8px_var(--lead-glow)]"
+              className="w-full h-full"
+              aria-hidden="true"
             >
               <path
                 fill="var(--primary)"
@@ -159,17 +159,17 @@ export default function Navbar({ onOpenPopup }) {
             </svg>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="font-black text-xl tracking-tight text-[var(--foreground)] transition-colors duration-200 group-hover:text-[var(--primary)]">
+            <span className="font-bold text-xl tracking-tight text-[var(--foreground)] transition-colors duration-150 group-hover:text-[var(--primary)]">
               Close<em className="not-italic text-[var(--primary)]">Desk</em>
             </span>
-            <span className="hidden sm:block font-mono text-[10px] text-[var(--foreground-muted)] tracking-widest uppercase opacity-80">
+            <span className="hidden sm:block text-xs text-[var(--foreground-muted)] font-normal">
               by Aicyro
             </span>
           </div>
         </Link>
 
         {/* ================= DESKTOP LINKS ================= */}
-        <div className="hidden lg:flex items-center gap-1.5 p-1 rounded-full border border-[var(--border-color)]/50 bg-[var(--card-bg)]/40 backdrop-blur-lg">
+        <div className="hidden lg:flex items-center gap-1.5 p-1 rounded-full border border-[var(--border-color)] bg-[var(--card-bg)]/70 backdrop-blur-sm">
           {navLinks.map((link) => {
             const isActive = activeSection === link.href.substring(2);
             return (
@@ -177,10 +177,10 @@ export default function Navbar({ onOpenPopup }) {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className={`relative px-4 py-1.5 text-sm rounded-full transition-all duration-200 cursor-pointer ${
+                className={`relative px-4 py-1.5 text-sm rounded-full transition-colors duration-150 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] ${
                   isActive
-                    ? "text-[var(--primary)] font-bold bg-[var(--primary)]/10 shadow-[0_0_12px_var(--lead-glow)]"
-                    : "font-medium text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--foreground-muted)]/5"
+                    ? "text-[var(--foreground)] font-semibold bg-[var(--primary)]/15 border border-[var(--primary)]/30"
+                    : "font-normal text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--card-bg)]"
                 }`}
               >
                 {link.name}
@@ -193,20 +193,19 @@ export default function Navbar({ onOpenPopup }) {
         <div className="hidden lg:flex items-center gap-4 shrink-0">
           <button
             onClick={toggleTheme}
-            aria-label="Toggle theme"
-            className="relative w-10 h-10 flex items-center justify-center rounded-full bg-[var(--card-bg)] border border-[var(--border-color)] hover:border-[var(--primary)]/50 hover:bg-[var(--primary)]/10 hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden group shadow-sm"
+            aria-label="Toggle color theme"
+            className="relative w-10 h-10 flex items-center justify-center rounded-full bg-[var(--card-bg)] border border-[var(--border-color)] hover:border-[var(--primary)]/50 motion-safe:transition-transform duration-150 motion-safe:hover:scale-105 motion-safe:active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] cursor-pointer"
           >
             <div className="relative flex items-center justify-center w-full h-full">
               <svg
-                className={`absolute w-4 h-4 transition-all duration-500 ease-in-out ${
-                  isLight
-                    ? "opacity-100 rotate-0 scale-100 text-[var(--primary)]"
-                    : "opacity-0 -rotate-90 scale-50 text-[var(--foreground-muted)]"
+                className={`absolute w-4 h-4 transition-opacity duration-200 ${
+                  isLight ? "opacity-100 text-[var(--primary)]" : "opacity-0 text-[var(--foreground-muted)]"
                 }`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
                 strokeWidth="2"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -215,15 +214,14 @@ export default function Navbar({ onOpenPopup }) {
                 />
               </svg>
               <svg
-                className={`absolute w-4 h-4 transition-all duration-500 ease-in-out ${
-                  !isLight
-                    ? "opacity-100 rotate-0 scale-100 text-[var(--accent-blue)]"
-                    : "opacity-0 rotate-90 scale-50 text-[var(--foreground-muted)]"
+                className={`absolute w-4 h-4 transition-opacity duration-200 ${
+                  !isLight ? "opacity-100 text-[var(--accent-blue)]" : "opacity-0 text-[var(--foreground-muted)]"
                 }`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
                 strokeWidth="2"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -236,12 +234,9 @@ export default function Navbar({ onOpenPopup }) {
 
           <button
             onClick={onOpenPopup}
-            className="relative group px-5 py-2.5 overflow-hidden bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-[#ffffff] text-sm font-bold rounded-xl transition-all duration-300 ease-out shadow-[0_4px_14px_var(--lead-glow)] hover:shadow-[0_8px_25px_var(--lead-glow)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]"
+            className="px-5 py-2.5 bg-[var(--primary)] hover:bg-[var(--secondary)] text-[var(--color-accent-ink)] text-sm font-semibold rounded-xl motion-safe:transition-transform duration-150 motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] cursor-pointer shadow-sm"
           >
-            <span className="absolute top-0 -left-[100%] w-[60%] h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-[25deg] transition-all duration-700 group-hover:left-[150%]" />
-            <span className="relative z-10 flex items-center gap-1.5">
-              Claim a Spot
-            </span>
+            Claim a Spot
           </button>
         </div>
 
@@ -249,8 +244,8 @@ export default function Navbar({ onOpenPopup }) {
         <div className="flex items-center gap-3 lg:hidden shrink-0">
           <button
             onClick={toggleTheme}
-            aria-label="Toggle theme"
-            className="w-9 h-9 flex items-center justify-center rounded-lg bg-[var(--card-bg)] border border-[var(--border-color)] text-[var(--foreground)] active:scale-95 transition-transform"
+            aria-label="Toggle color theme"
+            className="w-9 h-9 flex items-center justify-center rounded-lg bg-[var(--card-bg)] border border-[var(--border-color)] text-[var(--foreground)] motion-safe:active:scale-95 motion-safe:transition-transform duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] cursor-pointer"
           >
             {isLight ? (
               <svg
@@ -259,6 +254,7 @@ export default function Navbar({ onOpenPopup }) {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
                 strokeWidth="2"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -273,6 +269,7 @@ export default function Navbar({ onOpenPopup }) {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
                 strokeWidth="2"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -285,23 +282,27 @@ export default function Navbar({ onOpenPopup }) {
 
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle menu"
-            className="w-9 h-9 flex flex-col items-center justify-center gap-1.5 rounded-lg border border-[var(--border-color)] bg-[var(--card-bg)] active:scale-95 transition-all"
+            aria-label="Toggle navigation menu"
+            className="w-9 h-9 flex flex-col items-center justify-center gap-1.5 rounded-lg border border-[var(--border-color)] bg-[var(--card-bg)] motion-safe:active:scale-95 motion-safe:transition-transform duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] cursor-pointer"
           >
             <span
-              className={`w-4 h-[2px] bg-[var(--foreground)] rounded-full transition-transform duration-300 ${isMobileMenuOpen ? "rotate-45 translate-y-[4px]" : ""}`}
-            ></span>
+              className={`w-4 h-[2px] bg-[var(--foreground)] rounded-full transition-transform duration-200 ${
+                isMobileMenuOpen ? "rotate-45 translate-y-[4px]" : ""
+              }`}
+            />
             <span
-              className={`w-4 h-[2px] bg-[var(--foreground)] rounded-full transition-transform duration-300 ${isMobileMenuOpen ? "-rotate-45 -translate-y-[4px]" : ""}`}
-            ></span>
+              className={`w-4 h-[2px] bg-[var(--foreground)] rounded-full transition-transform duration-200 ${
+                isMobileMenuOpen ? "-rotate-45 -translate-y-[4px]" : ""
+              }`}
+            />
           </button>
         </div>
       </div>
 
-      {/* ================= BUTTERY SMOOTH SCROLL TRACK BAR ================= */}
-      <div className="absolute bottom-0 left-0 w-full h-[2px] bg-transparent">
+      {/* ================= SMOOTH SCROLL TRACK BAR ================= */}
+      <div className="absolute bottom-0 left-0 w-full h-[2px] bg-transparent" aria-hidden="true">
         <div
-          className="h-full w-full bg-gradient-to-r from-[var(--primary)] via-[var(--secondary)] to-[var(--accent-blue)] origin-left will-change-transform transition-transform duration-75 ease-out"
+          className="h-full w-full bg-[var(--primary)] origin-left will-change-transform transition-transform duration-75 ease-out"
           style={{ transform: `scaleX(${scrollProgress})` }}
         />
       </div>
@@ -313,8 +314,8 @@ export default function Navbar({ onOpenPopup }) {
             initial={{ opacity: 0, height: 0, y: -8 }}
             animate={{ opacity: 1, height: "auto", y: 0 }}
             exit={{ opacity: 0, height: 0, y: -8 }}
-            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:hidden absolute top-full left-0 w-full bg-[var(--background)]/95 backdrop-blur-2xl border-b border-[var(--border-color)] shadow-xl overflow-hidden"
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:hidden absolute top-full left-0 w-full bg-[var(--background)]/95 backdrop-blur-md border-b border-[var(--border-color)] shadow-xl overflow-hidden"
           >
             <div className="px-4 py-4 flex flex-col gap-2">
               {navLinks.map((link, i) => {
@@ -324,26 +325,26 @@ export default function Navbar({ onOpenPopup }) {
                     key={link.name}
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.04 }}
+                    transition={{ delay: i * 0.03 }}
                     href={link.href}
                     onClick={(e) => handleNavClick(e, link.href)}
-                    className={`px-4 py-3 text-sm rounded-xl transition-all border cursor-pointer ${
+                    className={`px-4 py-3 text-sm rounded-xl transition-colors duration-150 border cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] ${
                       isActive
-                        ? "text-[var(--primary)] font-bold bg-[var(--primary)]/10 border-[var(--primary)]/30"
-                        : "font-medium text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--card-bg)] border-transparent hover:border-[var(--border-color)]"
+                        ? "text-[var(--foreground)] font-semibold bg-[var(--primary)]/15 border-[var(--primary)]/30"
+                        : "font-normal text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--card-bg)] border-transparent"
                     }`}
                   >
                     {link.name}
                   </motion.a>
                 );
               })}
-              <div className="pt-4 mt-2 border-t border-[var(--grid-line)] px-2">
+              <div className="pt-4 mt-2 border-t border-[var(--border-color)] px-2">
                 <button
                   onClick={() => {
                     setIsMobileMenuOpen(false);
                     onOpenPopup();
                   }}
-                  className="w-full py-3.5 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-[#ffffff] text-sm font-bold rounded-xl transition-all duration-300 shadow-md active:scale-[0.99]"
+                  className="w-full py-3 bg-[var(--primary)] hover:bg-[var(--secondary)] text-[var(--color-accent-ink)] text-sm font-semibold rounded-xl transition-colors duration-150 shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] cursor-pointer"
                 >
                   Claim a Founding 25 Spot
                 </button>

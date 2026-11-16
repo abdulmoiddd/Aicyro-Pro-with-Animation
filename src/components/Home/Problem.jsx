@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useRef, useEffect, useState } from "react";
 import { User, Clock, XCircle, Trophy } from "lucide-react";
 
@@ -43,10 +45,10 @@ export default function Problem() {
     if (!hasScrolledIntoView) return;
 
     const headerTimer = setTimeout(() => setHeaderVisible(true), 150);
-    const lineTimer = setTimeout(() => setLineDrawn(true), 400);
+    const lineTimer = setTimeout(() => setLineDrawn(true), 350);
 
-    const baseDelay = 600;
-    const interval = 250;
+    const baseDelay = 500;
+    const interval = 200;
 
     const stageTimers = [0, 1, 2, 3].map((index) => {
       return setTimeout(
@@ -63,7 +65,7 @@ export default function Problem() {
 
     const footerTimer = setTimeout(
       () => setFooterVisible(true),
-      baseDelay + 4 * interval + 200,
+      baseDelay + 4 * interval + 150,
     );
 
     return () => {
@@ -116,97 +118,82 @@ export default function Problem() {
     <section
       id="problem"
       ref={sectionRef}
-      className="relative w-full py-24 sm:py-32 px-4 sm:px-6 bg-[var(--background)] text-[var(--foreground)] z-10 overflow-hidden border-t border-[var(--border-color)] xl:min-h-screen flex flex-col justify-center transition-colors duration-300"
+      className="relative w-full py-24 sm:py-32 px-4 sm:px-6 bg-[var(--background)] text-[var(--foreground)] z-10 overflow-hidden border-t border-[var(--border-color)] flex flex-col justify-center transition-colors duration-200"
     >
-      {/* Central Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-[60%] bg-gradient-to-b from-transparent via-[var(--primary)]/5 to-transparent blur-[100px] pointer-events-none -z-10"></div>
-
-      <div className="max-w-[1180px] mx-auto w-full flex flex-col items-center">
+      <div className="max-w-[var(--container)] mx-auto w-full flex flex-col items-center">
         {/* ================= HEADER ================= */}
         <div
-          className={`flex flex-col items-center text-center mb-20 lg:mb-24 transition-all duration-1000 ease-out ${
+          className={`flex flex-col items-center text-center mb-16 lg:mb-20 transition-opacity transition-transform duration-500 ease-out ${
             headerVisible
               ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-12"
+              : "opacity-0 translate-y-6"
           }`}
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--primary)]/30 bg-[var(--primary)]/5 mb-5 shadow-[0_0_15px_color-mix(in_srgb,var(--primary)_15%,transparent)]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)] animate-pulse"></span>
-            <span className="text-[10px] font-mono text-[var(--primary)] uppercase tracking-widest">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[var(--border-color)] bg-[var(--card-bg)] mb-5 shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)] animate-pulse" aria-hidden="true" />
+            <span className="text-xs font-medium text-[var(--foreground-muted)]">
               The Leak in Your Website
             </span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[2.6rem] font-bold tracking-tight mb-5 text-balance leading-[1.12]">
-            You're paying for traffic.
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-5 text-balance leading-[1.12] text-[var(--foreground)]">
+            You&apos;re paying for traffic.
             <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)]">
+            <span className="text-[var(--primary)]">
               Your competitors are booking it.
             </span>
           </h2>
-          <p className="text-[var(--foreground-muted)] text-[1.1rem] max-w-[58ch] font-medium leading-relaxed text-balance">
-            A homeowner with a burst pipe doesn't fill out a contact form and
+          <p className="text-[var(--foreground-muted)] text-base sm:text-lg max-w-[58ch] font-normal leading-relaxed text-balance">
+            A homeowner with a burst pipe doesn&apos;t fill out a contact form and
             wait. They open three tabs and hire whoever answers first.
           </p>
         </div>
 
-        {/* ================= PIPELINE GRID (How it works style) ================= */}
-        <div className="relative w-full mb-20 lg:mb-28">
-          {/* Connecting Line (Desktop) with Traveling Energy Pulse */}
-          <div className="hidden lg:block absolute top-[33px] left-[12.5%] right-[12.5%] h-[2px] bg-[var(--grid-line)] z-0 rounded-full overflow-hidden">
+        {/* ================= PIPELINE GRID ================= */}
+        <div className="relative w-full mb-16 lg:mb-24">
+          {/* Connecting Line (Desktop) */}
+          <div className="hidden lg:block absolute top-[33px] left-[12.5%] right-[12.5%] h-[2px] bg-[var(--grid-line)] z-0 rounded-full overflow-hidden" aria-hidden="true">
             <div
-              className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] transition-all duration-[2s] ease-[cubic-bezier(0.22,1,0.36,1)] relative"
-              style={{ width: lineDrawn ? "100%" : "0%" }}
-            >
-              {/* Traveling energy beam */}
-              {lineDrawn && (
-                <div className="absolute top-0 bottom-0 w-24 bg-gradient-to-r from-transparent via-white to-transparent animate-[pulse-travel_2.5s_linear_infinite]" />
-              )}
-            </div>
+              className="h-full bg-[var(--primary)] transition-transform duration-700 ease-out origin-left"
+              style={{ transform: `scaleX(${lineDrawn ? 1 : 0})` }}
+            />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 sm:gap-8 relative z-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
             {stages.map((stage, i) => {
               const isVisible = visibleStages[i];
               const Icon = stage.icon;
 
-              // Determine styling based on status
               const isLost = stage.status === "lost";
               const isWarning = stage.status === "warning";
 
               const iconColor = isLost
                 ? "text-[var(--logo-politico-red)]"
                 : isWarning
-                  ? "text-[var(--accent-blue)]"
+                  ? "text-[var(--foreground-muted)]"
                   : "text-[var(--primary)]";
 
               const borderColorClass = isLost
-                ? "border-[var(--logo-politico-red)]/40 shadow-[0_10px_26px_color-mix(in_srgb,var(--logo-politico-red)_18%,transparent)]"
+                ? "border-[var(--logo-politico-red)]/40 bg-[var(--card-bg)]"
                 : isVisible
-                  ? "border-[var(--primary)]/45 shadow-[0_10px_26px_color-mix(in_srgb,var(--primary)_18%,transparent)]"
-                  : "border-[var(--border-color)] shadow-[0_2px_8px_color-mix(in_srgb,var(--foreground)_5%,transparent)]";
+                  ? "border-[var(--border-color)] bg-[var(--card-bg)]"
+                  : "border-[var(--border-color)] bg-[var(--card-bg)]";
 
               return (
                 <div
                   key={i}
-                  className={`relative text-center px-4 transition-all duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  className={`relative text-center px-4 transition-opacity transition-transform duration-500 ease-out ${
                     isVisible
-                      ? "opacity-100 translate-y-0 blur-none"
-                      : "opacity-0 translate-y-8 blur-sm"
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-6"
                   }`}
                 >
-                  {/* Step Icon Box with Live Motion */}
+                  {/* Step Icon Box */}
                   <div className="group cursor-default">
                     <div
-                      className={`mx-auto w-[66px] h-[66px] mb-4 rounded-[20px] bg-[var(--card-bg)] border flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-1.5 group-hover:scale-105 relative overflow-hidden ${borderColorClass}`}
+                      className={`mx-auto w-[66px] h-[66px] mb-4 rounded-2xl border flex items-center justify-center transition-colors duration-200 relative overflow-hidden shadow-sm ${borderColorClass}`}
                     >
                       {i === 0 && (
-                        <div className="relative flex items-center justify-center">
-                          <span className="absolute inset-[-6px] rounded-full border border-[var(--primary)]/40 animate-[ping_3s_cubic-bezier(0,0,0.2,1)_infinite] pointer-events-none" />
-                          <User
-                            className={`${iconColor} transition-transform duration-500 group-hover:scale-110`}
-                            size={28}
-                          />
-                        </div>
+                        <User className={iconColor} size={28} aria-hidden="true" />
                       )}
 
                       {i === 1 && (
@@ -219,6 +206,7 @@ export default function Problem() {
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             className={`w-full h-full ${iconColor}`}
+                            aria-hidden="true"
                           >
                             <circle cx="12" cy="12" r="10" />
                             <polyline points="12 6 12 12" />
@@ -227,7 +215,7 @@ export default function Problem() {
                               y1="12"
                               x2="16.5"
                               y2="12"
-                              className="origin-[12px_12px] animate-[spin_8s_linear_infinite]"
+                              className="origin-[12px_12px]"
                               strokeWidth="2"
                             />
                           </svg>
@@ -235,38 +223,25 @@ export default function Problem() {
                       )}
 
                       {i === 2 && (
-                        <div className="relative flex items-center justify-center">
-                          <XCircle
-                            className={`${iconColor} animate-[pulse_2.2s_ease-in-out_infinite] transition-transform duration-500 group-hover:scale-110`}
-                            size={28}
-                          />
-                        </div>
+                        <XCircle className={iconColor} size={28} aria-hidden="true" />
                       )}
 
                       {i === 3 && (
-                        <div className="relative flex items-center justify-center">
-                          <Trophy
-                            className={`${iconColor} transition-transform duration-500 group-hover:scale-110`}
-                            size={28}
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full animate-[shimmer-sweep_3.5s_infinite] pointer-events-none" />
-                        </div>
+                        <Trophy className={iconColor} size={28} aria-hidden="true" />
                       )}
                     </div>
                   </div>
 
-                  {/* Step Eyebrow Number */}
-                  <span className="block font-mono text-[0.68rem] text-[var(--primary)] tracking-[0.14em] mb-2">
-                    {stage.num}
-                  </span>
-
                   {/* Step Title & Desc */}
                   <h3
-                    className={`text-[1rem] font-semibold mb-2 ${isLost ? "text-[var(--logo-politico-red)]" : "text-[var(--foreground)]"}`}
+                    className={`text-base font-semibold mb-2 ${isLost ? "text-[var(--logo-politico-red)]" : "text-[var(--foreground)]"}`}
                   >
+                    <span className="text-xs font-normal text-[var(--foreground-muted)] mr-1.5 tabular-nums">
+                      {stage.num}.
+                    </span>
                     {stage.title}
                   </h3>
-                  <p className="text-[0.88rem] text-[var(--foreground-muted)] leading-relaxed">
+                  <p className="text-sm text-[var(--foreground-muted)] leading-relaxed">
                     {stage.desc}
                   </p>
                 </div>
@@ -277,28 +252,28 @@ export default function Problem() {
 
         {/* ================= COMPACT FOOTER / DIAGNOSTICS ================= */}
         <div
-          className={`w-full flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 bg-[var(--card-bg)]/80 backdrop-blur-xl border border-[var(--border-color)] p-8 sm:p-10 rounded-3xl relative overflow-hidden transition-all duration-1000 ease-out shadow-sm ${
+          className={`w-full flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 bg-[var(--card-bg)] border border-[var(--border-color)] p-8 sm:p-10 rounded-3xl relative overflow-hidden transition-opacity transition-transform duration-500 ease-out shadow-sm ${
             footerVisible
               ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-8"
+              : "opacity-0 translate-y-6"
           }`}
         >
           <div className="lg:w-1/3 text-center lg:text-left z-10">
-            <h3 className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] mb-2">
+            <h3 className="text-2xl sm:text-3xl font-bold text-[var(--foreground)] mb-2">
               Your ad spend. <br /> Their job.
             </h3>
-            <p className="text-sm text-[var(--foreground-muted)] mt-4">
+            <p className="text-sm text-[var(--foreground-muted)] mt-2">
               Stop leaking high-intent leads to your competitors.
             </p>
           </div>
 
-          <div className="lg:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-y-5 gap-x-6 z-10">
+          <div className="lg:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 z-10">
             {pains.map((pain, i) => (
-              <div key={i} className="flex items-start gap-3 group">
-                <div className="w-5 h-5 rounded bg-[var(--primary)]/10 border border-[var(--primary)]/20 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-[var(--primary)] transition-colors duration-300">
-                  <XCircle className="w-3 h-3 text-[var(--primary)] group-hover:text-[var(--card-bg)] transition-colors duration-300" />
+              <div key={i} className="flex items-start gap-3">
+                <div className="w-5 h-5 rounded bg-[var(--background)] border border-[var(--border-color)] flex items-center justify-center shrink-0 mt-0.5">
+                  <XCircle className="w-3.5 h-3.5 text-[var(--primary)]" aria-hidden="true" />
                 </div>
-                <span className="text-[0.92rem] font-medium text-[var(--foreground-muted)] group-hover:text-[var(--foreground)] transition-colors duration-300 leading-snug">
+                <span className="text-sm font-normal text-[var(--foreground-muted)] leading-snug">
                   {pain}
                 </span>
               </div>
@@ -306,19 +281,6 @@ export default function Problem() {
           </div>
         </div>
       </div>
-
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-        @keyframes pulse-travel {
-          0% { left: -25%; opacity: 0; }
-          10% { opacity: 1; }
-          90% { opacity: 1; }
-          100% { left: 100%; opacity: 0; }
-        }
-      `,
-        }}
-      />
     </section>
   );
 }

@@ -57,7 +57,7 @@ export default function Faq() {
         const [entry] = entries;
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.disconnect(); // Only play animation once
+          observer.disconnect();
         }
       },
       { threshold: 0.15 },
@@ -78,35 +78,25 @@ export default function Faq() {
     <section
       id="faq"
       ref={sectionRef}
-      className="relative z-10 py-20 sm:py-28 bg-[var(--background)] transition-colors duration-300 overflow-hidden"
+      className="relative z-10 py-20 sm:py-28 bg-[var(--background)] transition-colors duration-300"
     >
-      {/* --- LIVE AMBIENT ELEMENTS --- */}
-      <div className="absolute inset-0 pointer-events-none z-0 flex items-center justify-center">
-        {/* Left moving orb */}
-        <div className="absolute top-[10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[var(--primary)] opacity-[0.04] blur-[100px] mix-blend-screen animate-[pulse_6s_ease-in-out_infinite_alternate]" />
-        {/* Right moving orb */}
-        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[var(--primary)] opacity-[0.03] blur-[120px] mix-blend-screen animate-[pulse_8s_ease-in-out_infinite_alternate_reverse]" />
-      </div>
-      {/* ----------------------------- */}
-
       <div className="relative z-10 max-w-[1180px] mx-auto px-6">
         {/* Section Header */}
         <div
-          className={`text-center max-w-[680px] mx-auto mb-16 transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          className={`text-center max-w-[680px] mx-auto mb-16 transition-[opacity,transform] duration-700 ease-out ${
             isVisible
-              ? "opacity-100 translate-y-0 blur-none"
-              : "opacity-0 translate-y-12 blur-sm"
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-8"
           }`}
         >
-          <span className="font-mono text-xs tracking-widest uppercase text-[var(--primary)] flex items-center justify-center gap-2 mb-5">
-            <div className="w-7 h-0.5 bg-gradient-to-r from-[var(--primary)] to-transparent rounded-full" />
-            Straight answers
-            <div className="w-7 h-0.5 bg-gradient-to-l from-[var(--primary)] to-transparent rounded-full" />
-          </span>
+          <div className="inline-flex items-center justify-center gap-2 px-3 py-1 rounded-full border border-[var(--border-color)] bg-[var(--card-bg)] text-xs font-semibold text-[var(--primary)] mb-5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)]" aria-hidden="true" />
+            <span>Straight answers</span>
+          </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight text-[var(--foreground)]">
             The questions everyone asks. Answered plainly.
           </h2>
-          <p className="text-lg text-[var(--foreground-muted)]">
+          <p className="text-base sm:text-lg text-[var(--foreground-muted)] leading-relaxed">
             Including the uncomfortable ones. If your question isn't here, ask
             it on the call — you'll get the same straight answer.
           </p>
@@ -114,12 +104,14 @@ export default function Faq() {
 
         {/* FAQ Accordion List */}
         <div
-          className={`max-w-[780px] mx-auto transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] delay-[200ms] ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+          className={`max-w-[780px] mx-auto transition-[opacity,transform] duration-700 ease-out delay-[100ms] ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
           {faqData.map((item, index) => {
             const isOpen = openIndex === index;
+            const contentId = `faq-content-${index}`;
+            const buttonId = `faq-button-${index}`;
 
             return (
               <div
@@ -127,40 +119,43 @@ export default function Faq() {
                 className="border-b border-[var(--border-color)] py-2 group"
               >
                 <button
+                  id={buttonId}
+                  aria-expanded={isOpen}
+                  aria-controls={contentId}
                   onClick={() => toggleFaq(index)}
-                  className="w-full text-left cursor-pointer flex justify-between items-center gap-6 font-display font-semibold text-[1.05rem] text-[var(--foreground)] py-5 px-1 hover:text-[var(--primary)] transition-colors focus:outline-none"
+                  className="w-full text-left cursor-pointer flex justify-between items-center gap-6 font-display font-semibold text-base sm:text-lg text-[var(--foreground)] py-5 px-1 hover:text-[var(--primary)] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-md"
                 >
                   <span>{item.question}</span>
 
-                  {/* Animated Plus/Cross Icon Button */}
+                  {/* Accessible Plus/Cross Indicator */}
                   <div
-                    className={`shrink-0 w-[28px] h-[28px] rounded-[10px] border relative transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+                    aria-hidden="true"
+                    className={`shrink-0 w-7 h-7 rounded-lg border relative transition-[transform,border-color,background-color] duration-200 ease-out ${
                       isOpen
-                        ? "rotate-45 border-[var(--primary)] bg-[var(--primary)]/10 shadow-[0_0_12px_var(--lead-glow)]"
-                        : "border-[var(--border-color)] group-hover:border-[var(--primary)] group-hover:scale-105"
+                        ? "rotate-45 border-[var(--primary)] bg-[var(--primary)]/10"
+                        : "border-[var(--border-color)] group-hover:border-[var(--primary)]"
                     }`}
                   >
                     {/* Horizontal line */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[11px] h-[2px] bg-[var(--primary)] rounded-full" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-0.5 bg-[var(--primary)] rounded-full" />
                     {/* Vertical line */}
-                    <div
-                      className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[2px] h-[11px] bg-[var(--primary)] rounded-full transition-transform duration-300 ${
-                        isOpen ? "scale-y-100" : "scale-y-100" // kept scale-y-100 so it forms an 'X' when rotated
-                      }`}
-                    />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0.5 h-3 bg-[var(--primary)] rounded-full" />
                   </div>
                 </button>
 
-                {/* Smooth Height Transition Content */}
+                {/* Content */}
                 <div
-                  className={`grid transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  id={contentId}
+                  role="region"
+                  aria-labelledby={buttonId}
+                  className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
                     isOpen
-                      ? "grid-rows-[1fr] opacity-100 translate-y-0"
-                      : "grid-rows-[0fr] opacity-0 -translate-y-2"
+                      ? "grid-rows-[1fr] opacity-100"
+                      : "grid-rows-[0fr] opacity-0"
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <p className="px-1 pb-6 text-[0.98rem] text-[var(--foreground-muted)] leading-relaxed max-w-[66ch]">
+                    <p className="px-1 pb-6 text-sm sm:text-base text-[var(--foreground-muted)] leading-relaxed max-w-[66ch]">
                       {item.answer}
                     </p>
                   </div>
